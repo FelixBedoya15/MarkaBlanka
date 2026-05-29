@@ -77,8 +77,6 @@ services:
   rag_api:
     container_name: somossst-rag-api
     build: ./rag_api
-    ports:
-      - "${RAG_PORT:-8000}:${RAG_PORT:-8000}"
     environment:
       - DB_HOST=vectordb
       - RAG_PORT=${RAG_PORT:-8000}
