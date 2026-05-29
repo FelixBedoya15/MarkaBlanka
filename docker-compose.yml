@@ -5,6 +5,7 @@ services:
   api:
     env_file:
       - .env
+    container_name: somossst-api
     ports:
       - "${PORT}:${PORT}"
     depends_on:
@@ -37,6 +38,7 @@ services:
     networks:
       - dokploy-network
   mongodb:
+    container_name: somossst-mongodb
     image: mongo:4.4.18
     restart: always
     user: "${UID}:${GID}"
@@ -47,6 +49,7 @@ services:
     networks:
       - dokploy-network
   meilisearch:
+    container_name: somossst-meilisearch
     image: getmeili/meilisearch:v1.12.3
     restart: always
     user: "${UID}:${GID}"
@@ -60,6 +63,7 @@ services:
     networks:
       - dokploy-network
   vectordb:
+    container_name: somossst-vectordb
     image: pgvector/pgvector:0.8.0-pg15-trixie
     environment:
       POSTGRES_DB: mydatabase
@@ -71,6 +75,7 @@ services:
     networks:
       - dokploy-network
   rag_api:
+    container_name: somossst-rag-api
     build: ./rag_api
     ports:
       - "${RAG_PORT:-8000}:${RAG_PORT:-8000}"
