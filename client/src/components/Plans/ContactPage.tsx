@@ -61,7 +61,7 @@ export default function ContactPage() {
                     </div>
                     <h1 className="mb-4 text-3xl font-extrabold text-text-primary">¡Solicitud Recibida!</h1>
                     <p className="mb-8 text-text-secondary">
-                        Gracias por tu interés en WAPPY IA. Hemos recibido tus datos y un miembro de nuestro equipo se pondrá en contacto contigo en las próximas 24 horas hábiles.
+                        Gracias por tu interés en SomosSST. Hemos recibido tus datos y un miembro de nuestro equipo se pondrá en contacto contigo en las próximas 24 horas hábiles.
                     </p>
                     <button
                         onClick={() => navigate('/planes')}
@@ -109,7 +109,7 @@ export default function ContactPage() {
                             Soluciones Corporativas
                         </div>
                         <h1 className="mb-6 text-4xl font-black tracking-tight text-text-primary lg:text-5xl">
-                            Lleva tu empresa al próximo nivel con <span className="text-green-500">WAPPY IA</span>
+                            Lleva tu empresa al próximo nivel con <span className="text-green-500">SomosSST</span>
                         </h1>
                         <p className="mb-8 text-lg text-text-secondary leading-relaxed">
                             Nuestros planes empresariales están diseñados para organizaciones que buscan potencia, seguridad y personalización total. 
@@ -137,7 +137,7 @@ export default function ContactPage() {
                             <h4 className="mb-2 text-sm font-bold text-text-primary">¿Tienes dudas directas?</h4>
                             <p className="text-sm text-text-secondary mb-4">Escríbenos directamente o visítanos.</p>
                             <div className="space-y-2 text-sm text-text-primary font-medium">
-                                <p className="flex items-center gap-2"><Mail className="h-4 w-4 text-violet-500" /> info@grupowappy.com</p>
+                                <p className="flex items-center gap-2"><Mail className="h-4 w-4 text-violet-500" /> info@somossst.com</p>
                                 <a 
                                     href="https://wa.me/573126417890" 
                                     target="_blank" 

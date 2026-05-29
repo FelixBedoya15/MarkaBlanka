@@ -749,7 +749,7 @@ const CanvasExcelEditor: React.FC<CanvasExcelEditorProps> = ({ initialContent, o
             </div>
           </div>
 
-          {/* Pestañas (Hojas) del Excel con Estilo WAPPY Premium */}
+          {/* Pestañas (Hojas) del Excel con Estilo SomosSST Premium */}
           <div className="flex items-center justify-between border-t border-border-medium bg-surface-secondary px-4 py-2 mt-auto select-none">
             <div className="flex items-center gap-1.5 overflow-x-auto py-1 max-w-[80%] pr-2 scrollbar-none">
               {Object.keys(sheets).map((sheetName) => {

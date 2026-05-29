@@ -192,11 +192,11 @@ const LiveAnalysisModal: FC<LiveAnalysisModalProps> = ({ isOpen, onClose, conver
 
             // REGLA DE ORO 1: Si el HTML ya viene completamente formateado del servidor con la plantilla premium esmeralda/teal,
             // no lo envolvemos doblemente. Lo pasamos tal cual al callback del editor principal.
-            if (html.includes('WAPPY IA • HSE Command Center') || html.includes('wappy-kpi')) {
+            if (html.includes('WAPPY IA • HSE Command Center') || html.includes('SomosSST • HSE Command Center') || html.includes('wappy-kpi') || html.includes('somossst-kpi')) {
                 const parseKpi = (rawHtml: string) => {
                     const defaults = { riesgo: 'INDETERMINADO', accion: 'Evaluar', consecuencia: 'Incapacitante', npeligros: '5+' };
                     try {
-                        const match = rawHtml.match(/<div[^>]+id=["']wappy-kpi["'][^>]*>/i);
+                        const match = rawHtml.match(/<div[^>]+id=["'](?:wappy-kpi|somossst-kpi)["'][^>]*>/i);
                         if (!match) return defaults;
                         const tag = match[0];
                         const get = (attr: string) => {
@@ -245,9 +245,9 @@ const LiveAnalysisModal: FC<LiveAnalysisModalProps> = ({ isOpen, onClose, conver
             const radicadoId = `LA-${new Date().getFullYear()}-PENDIENTE`;
 
             // Envoltura Esmeralda/Teal idéntica al formato del inicio y al final
-            const finalHtml = `<div id="wappy-kpi" data-riesgo="PENDIENTE" data-accion="Evaluar" data-consecuencia="Incapacitante" data-npeligros="5" style="display:none"></div>
+            const finalHtml = `<div id="somossst-kpi" data-riesgo="PENDIENTE" data-accion="Evaluar" data-consecuencia="Incapacitante" data-npeligros="5" style="display:none"></div>
 <div style="font-family:'Segoe UI',Arial,sans-serif; max-width:900px; margin:0 auto; color:#111827; background-color:#f9fafb; border-radius:16px; overflow:hidden; border:1px solid #e5e7eb; box-shadow:0 10px 15px -3px rgba(0,0,0,0.05);">
-  <!-- HEADER (WAPPY PREMIUM EMERALD-TEAL-CYAN DEGRADADO) -->
+  <!-- HEADER (SOMOSSST PREMIUM EMERALD-TEAL-CYAN DEGRADADO) -->
   <div style="background:linear-gradient(135deg,#064e3b 0%,#0f766e 60%,#0891b2 100%); padding:32px; position:relative; overflow:hidden; border-bottom:3px solid #14b8a6;">
     <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; position:relative; z-index:10;">
       <div>
@@ -258,7 +258,7 @@ const LiveAnalysisModal: FC<LiveAnalysisModalProps> = ({ isOpen, onClose, conver
               <animate attributeName="r" values="45;65;45" dur="1s" repeatCount="indefinite" />
             </circle>
           </svg>
-          ✨ WAPPY IA • HSE Command Center
+          ✨ SomosSST • HSE Command Center
         </div>
         <h1 style="color:#ffffff; font-size:1.8em; font-weight:900; margin:0 0 6px; letter-spacing:-0.5px; text-shadow:0 2px 4px rgba(0,0,0,0.2);">
           Informe de Análisis de Riesgos y Peligros
@@ -996,7 +996,7 @@ const LiveAnalysisModal: FC<LiveAnalysisModalProps> = ({ isOpen, onClose, conver
         return (
             <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-50/98 backdrop-blur-md transition-all duration-300">
                 <div className="relative w-full h-full flex flex-col items-center justify-center p-6 md:p-12 overflow-y-auto">
-                    {/* Wappy Design Light BG Gradients */}
+                    {/* SomosSST Design Light BG Gradients */}
                     <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-slate-100/50 via-white to-teal-50/30 opacity-70"></div>
                     
                     {/* Top Close Button */}

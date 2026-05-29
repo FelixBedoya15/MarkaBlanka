@@ -1041,7 +1041,7 @@ const CanvasPanel: React.FC<CanvasPanelProps> = ({ conversationId }) => {
             <div className="space-y-2">
               <h3 className="text-xl font-extrabold text-text-primary">El lienzo está listo</h3>
               <p className="text-sm leading-relaxed text-text-secondary">
-                Pídele a Wappy que empiece a redactar o diagramar un entregable. Canvas creará hojas
+                Pídele a SomosSST que empiece a redactar o diagramar un entregable. Canvas creará hojas
                 de cálculo, documentos, diapositivas y prototipos interactivos que podrás ver,
                 editar y exportar de inmediato.
               </p>
@@ -1166,7 +1166,7 @@ const CanvasPanel: React.FC<CanvasPanelProps> = ({ conversationId }) => {
       </svg>
     </div>
     <h1 class="text-2xl font-black bg-gradient-to-r from-teal-400 via-emerald-400 to-cyan-400 bg-clip-text text-transparent mb-3">
-      Prototipo de Código WAPPY
+      Prototipo de Código SomosSST
     </h1>
     <p class="text-xs text-slate-400 leading-relaxed mb-6">
       Bienvenido al sandbox interactivo de prototipos en HTML. Inserta componentes premium de SST desde la barra lateral izquierda y observa cómo cobran vida en tiempo real en la vista previa.

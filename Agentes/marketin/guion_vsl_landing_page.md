@@ -11,7 +11,7 @@ Este video es el corazón de tu estrategia. Está diseñado bajo el modelo de "C
 La estructura exacta es:
 1. **0:00 - 5:00:** Gancho, agitación del problema y nueva oportunidad (Bio-individuo). Aquí atrapas la atención.
 2. **Minuto 5:00 (Aprox):** 🛑 **POP-UP DE CAPTURA.** El video se pausa u oscurece sutilmente y aparece el formulario: *"Estás a punto de ver la demostración en vivo. Déjanos tu nombre y correo para enviarte el acceso a la plataforma y tu código de descuento especial al final de la clase"*.
-3. **5:00 - 15:00:** La "Clase" real (Demo de WAPPY IA). Matriz IPEVAR, Somos SST, RIT. Aquí matas objeciones mostrando que *realmente funciona*.
+3. **5:00 - 15:00:** La "Clase" real (Demo de SomosSST). Matriz IPEVAR, Somos SST, RIT. Aquí matas objeciones mostrando que *realmente funciona*.
 4. **15:00 - 20:00:** La Oferta (Programa Somos SST + Plataforma).
 5. **20:00 en adelante:** Urgencia (El código de descuento) y Cierre.
 
@@ -45,7 +45,7 @@ Como resultado: a los asesores les piden rebajas y cotizan barato para ganar cli
 
 Soy psicólogo, especialista en SST y programador senior. Durante más de 8 años he trabajado codo a codo con las ARLs más grandes del país: Sura, Bolívar, AXA Colpatria, Colmena. He visto el sistema desde adentro. Y me di cuenta de que la única forma de que un profesional SST sea indispensable y altamente valorado, es dejando de hacer trabajo manual y empezando a entregar análisis predictivo y personalizado.
 
-Por eso no fui a buscar una herramienta de IA por ahí para ver cómo la adaptaba. Me senté y construí una desde cero. Creé **WAPPY IA**, la primera plataforma de inteligencia artificial diseñada 100% para el ecosistema SST en Colombia. 
+Por eso no fui a buscar una herramienta de IA por ahí para ver cómo la adaptaba. Me senté y construí una desde cero. Creé **SomosSST**, la primera plataforma de inteligencia artificial diseñada 100% para el ecosistema SST en Colombia. 
 
 Y no se trata de un simple chat. Es un ecosistema que automatiza tu trabajo documental, analiza leyes y aplica el concepto de *SST Bio-Individual*. Reconoce que cada trabajador es distinto y genera políticas y prevenciones adaptadas a esa realidad.
 
@@ -59,17 +59,17 @@ Sé que suena a ciencia ficción. Por eso no quiero que me creas. Quiero que lo 
 **Félix:**
 "Voy a compartir mi pantalla y te voy a mostrar cómo hacer una Matriz IPEVAR completa en minutos y cómo el módulo de Inteligencia Predictiva puede salvar vidas (y tu carrera). 
 
-Pero antes de entrar a la plataforma, quiero asegurarme de enviarte algo. En tu pantalla está apareciendo un pequeño formulario. Déjame ahí tu nombre y tu correo. ¿Para qué? Para enviarte al correo el acceso a WAPPY IA y un código de descuento único que te voy a dar al final de esta clase. Llénalo rápido y seguimos con la demostración."
+Pero antes de entrar a la plataforma, quiero asegurarme de enviarte algo. En tu pantalla está apareciendo un pequeño formulario. Déjame ahí tu nombre y tu correo. ¿Para qué? Para enviarte al correo el acceso a SomosSST y un código de descuento único que te voy a dar al final de esta clase. Llénalo rápido y seguimos con la demostración."
 
 *(El video se detiene o muestra un contador de 10 segundos mientras aparece el pop-up de captura de datos).*
 
 ---
 
 ### PARTE 4: LA DEMOSTRACIÓN (5:00 - 15:00)
-*(Grabación de pantalla de WAPPY IA. Félix habla en off guiando el recorrido).*
+*(Grabación de pantalla de SomosSST. Félix habla en off guiando el recorrido).*
 
 **Félix (Voz en off):**
-"Perfecto, ya estamos dentro. Lo que estás viendo es **WAPPY IA**. 
+"Perfecto, ya estamos dentro. Lo que estás viendo es **SomosSST**. 
 
 Mira esto. Vamos a la Matriz IPEVAR. Como asesor, sabes el dolor de cabeza que es esto. Aquí, simplemente activo el Agente IPEVAR en el chat. Le digo: *'Estoy asesorando a una empresa de construcción de 50 empleados. Hazme la matriz para el área de obra civil'.*
 
@@ -83,7 +83,7 @@ Y mira lo que pasa en el **Dashboard Predictivo**. La IA me dice: *'Félix, tien
 
 No estamos reaccionando al accidente. Estamos prediciendo dónde va a ocurrir. Imagina llegar a la reunión de gerencia con este nivel de información. El reconocimiento y los ascensos llegan solos cuando dejas de ser el que 'hace papeles' y te conviertes en el estratega que ahorra millones a la empresa.
 
-Pero la magia no termina ahí. WAPPY IA tiene **más de 15 agentes expertos en SST**. Tienes un Agente Abogado RIT para actualizar tu Reglamento Interno e incluso un Agente Médico Laboral. Y recuerda que desde el aplicativo Somos SST, puedes generar todos tus perfiles de cargo en segundos. ¿La mejor parte? Tanto los agentes como los aplicativos de WAPPY leen el contexto específico de tu organización. No te dan respuestas genéricas de internet, redactan los documentos con los datos, nivel de riesgo y actividad económica exacta de tu empresa o la de tu cliente."
+Pero la magia no termina ahí. SomosSST tiene **más de 15 agentes expertos en SST**. Tienes un Agente Abogado RIT para actualizar tu Reglamento Interno e incluso un Agente Médico Laboral. Y recuerda que desde el aplicativo Somos SST, puedes generar todos tus perfiles de cargo en segundos. ¿La mejor parte? Tanto los agentes como los aplicativos de SomosSST leen el contexto específico de tu organización. No te dan respuestas genéricas de internet, redactan los documentos con los datos, nivel de riesgo y actividad económica exacta de tu empresa o la de tu cliente."
 
 ---
 
@@ -91,7 +91,7 @@ Pero la magia no termina ahí. WAPPY IA tiene **más de 15 agentes expertos en S
 *(Félix vuelve a aparecer en cámara).*
 
 **Félix:**
-"Impresionante, ¿verdad? Y esto es solo el 10% de lo que WAPPY IA puede hacer. También hace investigación de accidentes (ATEL), evaluaciones OWAS, inspecciones de alta dirección, actas, políticas... todo asistido por IA.
+"Impresionante, ¿verdad? Y esto es solo el 10% de lo que SomosSST puede hacer. También hace investigación de accidentes (ATEL), evaluaciones OWAS, inspecciones de alta dirección, actas, políticas... todo asistido por IA.
 
 Ahora, tienes dos opciones. 
 
@@ -101,9 +101,9 @@ Opción 2: Dar el salto hoy mismo.
 
 Por eso no solo te estoy ofreciendo un software. Te estoy invitando al **Programa Somos SST**. 
 
-El Programa Somos SST no es solo el acceso a WAPPY IA. Es un programa de formación y aceleración profesional donde te voy a entregar:
+El Programa Somos SST no es solo el acceso a SomosSST. Es un programa de formación y aceleración profesional donde te voy a entregar:
 
-1. **Acceso Total al Plan PRO de WAPPY IA:** Inteligencia Predictiva, Editor de Archivos, +15 agentes expertos, todo desbloqueado.
+1. **Acceso Total al Plan PRO de SomosSST:** Inteligencia Predictiva, Editor de Archivos, +15 agentes expertos, todo desbloqueado.
 2. **El Curso de Aceleración en el Aula de Estudio:** Dentro de la misma plataforma, tendrás acceso a todo mi conocimiento. Te enseñaré metodológicamente cómo vender tus asesorías más caras usando la plataforma, cómo presentar informes a gerencia y cómo dominar la IA en SST.
 3. **Firmas digitales, exportaciones profesionales y actualizaciones normativas automáticas.**
 
@@ -117,11 +117,11 @@ Todo esto está dentro de la misma plataforma. Entras, estudias en el Aula, y ap
 **Félix:**
 "¿Cuánto cuesta acceder a esto? Si fueras a contratar a un desarrollador, a un abogado laboralista y a un ergónomo para que te asistan 24/7, te costaría millones al mes. 
 
-El Plan PRO de WAPPY IA con acceso a todo el Programa Somos SST tiene un valor oficial de **$80.223 pesos colombianos al mes**. Menos de lo que te gastas en un fin de semana, por una herramienta que te permite hacer un trabajo de 2 millones de pesos en una tarde.
+El Plan PRO de SomosSST con acceso a todo el Programa Somos SST tiene un valor oficial de **$80.223 pesos colombianos al mes**. Menos de lo que te gastas en un fin de semana, por una herramienta que te permite hacer un trabajo de 2 millones de pesos en una tarde.
 
 Si lo tomas anual, el precio regular es de **$842.160**. Pero tú estás aquí, tomaste esta clase y me dejaste tu correo.
 
-Y lo prometido es deuda. Como te quedaste hasta el final, te voy a dar un código de descuento exclusivo. Si debajo de este video seleccionas el Plan Anual e ingresas el código **WAPPY2026** (o el que decidas), no vas a pagar $842.160. 
+Y lo prometido es deuda. Como te quedaste hasta el final, te voy a dar un código de descuento exclusivo. Si debajo de este video seleccionas el Plan Anual e ingresas el código **SomosSST2026** (o el que decidas), no vas a pagar $842.160. 
 
 Vas a tener un descuento brutal que te asegura un ahorro masivo (Ej: más de 2 meses gratis), congelando tu acceso por todo un año a este precio introductorio. *(Ajusta el fraseo del descuento final según la promo real que quieras dar)*.
 
@@ -133,4 +133,4 @@ El mercado ya cambió. La pregunta es: ¿vas a liderar el cambio o vas a dejar q
 
 Soy Félix Bedoya. Nos vemos adentro de la plataforma."
 
-*(Fundido a negro. Logo de WAPPY IA. Texto: wappy-ia.com | Aplica tu código ahora).*
+*(Fundido a negro. Logo de SomosSST. Texto: somossst-ia.com | Aplica tu código ahora).*

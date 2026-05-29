@@ -8,7 +8,7 @@ import PublicAtelTestimonio from '~/components/SGSST/PublicAtelTestimonio';
 import PublicPerfilUpdate from '~/components/SGSST/PublicPerfilUpdate';
 import PrivacyPolicyPage from '~/components/Auth/PrivacyPolicyPage';
 import TermsOfServicePage from '~/components/Auth/TermsOfServicePage';
-import WappyAboutPage from '~/components/Auth/WappyAboutPage';
+import SomosSSTAboutPage from '~/components/Auth/SomosSSTAboutPage';
 import ComunidadPage from '~/components/Marketing/ComunidadPage';
 import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
 import {
@@ -150,7 +150,7 @@ export const router = createBrowserRouter(
     },
     {
       path: 'about',
-      element: <WappyAboutPage />,
+      element: <SomosSSTAboutPage />,
       errorElement: <RouteErrorBoundary />,
     },
     {

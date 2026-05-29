@@ -278,7 +278,7 @@ const LivePage = () => {
                     const parseKpi = (rawHtml: string) => {
                         const defaults = { riesgo: 'INDETERMINADO', accion: 'Evaluar', consecuencia: 'Incapacitante', npeligros: '5+' };
                         try {
-                            const match = rawHtml.match(/<div[^>]+id=["']wappy-kpi["'][^>]*>/i);
+                            const match = rawHtml.match(/<div[^>]+id=["'](?:wappy-kpi|somossst-kpi)["'][^>]*>/i);
                             if (!match) return defaults;
                             const tag = match[0];
                             const get = (attr: string) => {
@@ -473,7 +473,7 @@ const LivePage = () => {
 
     const initialReportContent = `
 <div style="font-family:'Segoe UI',Arial,sans-serif; max-width:900px; margin:0 auto; color:#111827; background-color:#f9fafb; border-radius:16px; overflow:hidden; border:1px solid #e5e7eb; box-shadow:0 10px 15px -3px rgba(0,0,0,0.05);">
-  <!-- HEADER (WAPPY PREMIUM EMERALD-TEAL-CYAN DEGRADADO) -->
+  <!-- HEADER (SOMOSSST PREMIUM EMERALD-TEAL-CYAN DEGRADADO) -->
   <div style="background:linear-gradient(135deg,#064e3b 0%,#0f766e 60%,#0891b2 100%); padding:32px; position:relative; overflow:hidden; border-bottom:3px solid #14b8a6;">
     <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; position:relative; z-index:10;">
       <div>
@@ -484,7 +484,7 @@ const LivePage = () => {
               <animate attributeName="r" values="45;65;45" dur="1s" repeatCount="indefinite" />
             </circle>
           </svg>
-          ✨ WAPPY IA • HSE Command Center
+          ✨ SomosSST • HSE Command Center
         </div>
         <h1 style="color:#ffffff; font-size:1.8em; font-weight:900; margin:0 0 6px; letter-spacing:-0.5px; text-shadow:0 2px 4px rgba(0,0,0,0.2);">
           Informe de Análisis de Riesgos y Peligros
@@ -603,10 +603,10 @@ const LivePage = () => {
     </div>
 
     <h3 style="color:#0f766e; font-size:1.4em; font-weight:900; margin:0 0 12px; letter-spacing:-0.3px;">
-      Centro de Mando HSE Predictivo • WAPPY IA
+      Centro de Mando HSE Predictivo • SomosSST
     </h3>
     <p style="color:#6b7280; font-size:0.95em; max-width:560px; line-height:1.6; margin:0 0 28px;">
-      El motor neuronal de Wappy está listo para evaluar el entorno en tiempo real. 
+      El motor neuronal de SomosSST está listo para evaluar el entorno en tiempo real. 
       Activa tu cámara utilizando el botón de <strong>Video En Vivo</strong> en la barra superior, o selecciona 
       <strong>Carga Rápida (Offline)</strong> para procesar videos grabados y fotos tomadas en campo.
     </p>
@@ -702,7 +702,7 @@ const LivePage = () => {
         <!-- Right Item -->
         <div style="flex:1; min-width:240px; background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:16px; border-left:4px solid #ef4444;">
           <strong style="display:block; color:#0f172a; font-size:0.85em; margin-bottom:8px;">
-            Evaluación Predictiva Wappy IA:
+            Evaluación Predictiva SomosSST:
           </strong>
           <table style="width:100%; border-collapse:collapse; font-size:0.75em;">
             <tr>
@@ -929,7 +929,7 @@ const LivePage = () => {
                                             <Sparkles className="h-6 w-6 text-white animate-spin-slow" />
                                         </div>
                                     </div>
-                                    <h3 className="text-xl font-bold text-white tracking-wide animate-pulse">Wappy-Audit HSE Command Center</h3>
+                                    <h3 className="text-xl font-bold text-white tracking-wide animate-pulse">SomosSST-Audit HSE Command Center</h3>
                                     <p className="text-cyan-400 text-sm mt-2 font-mono">PROCESANDO EVIDENCIAS & FORMULANDO MATRIZ GTC 45...</p>
                                     <div className="w-64 h-1.5 bg-gray-700 rounded-full mt-4 overflow-hidden relative">
                                         <div className="h-full bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full w-2/3 animate-[loading-bar_2s_ease-in-out_infinite]" />
@@ -945,7 +945,7 @@ const LivePage = () => {
                                     <span className="text-xs font-mono font-bold tracking-widest uppercase">Modo Carga Rápida (Offline)</span>
                                 </div>
                                 <h2 className="text-xl font-black text-text-primary">Inspección de HSE en Entornos de Baja Cobertura</h2>
-                                <p className="text-sm text-text-secondary">Sube fotos tomadas previamente en campo o graba/carga un video de hasta 10 segundos. Wappy IA generará una auditoría completa bajo el estándar GTC 45.</p>
+                                <p className="text-sm text-text-secondary">Sube fotos tomadas previamente en campo o graba/carga un video de hasta 10 segundos. SomosSST generará una auditoría completa bajo el estándar GTC 45.</p>
                             </div>
 
                             {/* Step 1: Template Selection (Guided Cards) */}

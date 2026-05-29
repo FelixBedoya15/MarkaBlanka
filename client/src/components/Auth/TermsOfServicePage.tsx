@@ -154,10 +154,10 @@ export default function TermsOfServicePage() {
                         Términos de Servicio
                     </h1>
                     <p className="mt-3 text-text-secondary">
-                        <strong>WAPPY LTDA</strong> — NIT 901437310-3 · Medellín, Colombia
+                        <strong>SomosSST S.A.S.</strong> — NIT 901437310-3 · Medellín, Colombia
                     </p>
                     <p className="mt-1 text-xs text-text-tertiary">
-                        Al acceder o utilizar <strong>wappy-ia.com</strong>, usted acepta estos términos.
+                        Al acceder o utilizar <strong>somossst.com</strong>, usted acepta estos términos.
                     </p>
                 </div>
 
@@ -165,13 +165,13 @@ export default function TermsOfServicePage() {
                 <div className="space-y-6">
                     <Section icon={<ScaleSVG />} title="1. Propiedad Intelectual" index={0}>
                         <p>
-                            Al adquirir un paquete de WAPPY IA, se le concede el derecho a utilizar el servicio
-                            según lo estipulado en su plan. <strong>WAPPY LTDA</strong> conserva todos los derechos
+                            Al adquirir un paquete de Somos SST, se le concede el derecho a utilizar el servicio
+                            según lo estipulado en su plan. <strong>SomosSST S.A.S.</strong> conserva todos los derechos
                             de propiedad intelectual sobre la plataforma, su diseño, funcionalidades y marca.
                         </p>
                         <p>
                             Queda prohibida la reproducción, distribución o modificación del software sin
-                            autorización expresa por escrito de WAPPY LTDA.
+                            autorización expresa por escrito de SomosSST S.A.S..
                         </p>
                     </Section>
 
@@ -226,7 +226,7 @@ export default function TermsOfServicePage() {
                                 <strong> El uso de la IA es responsabilidad exclusiva del usuario.</strong>
                             </p>
                             <p className="mt-2">
-                                <strong>WAPPY LTDA no es propietaria ni responsable de la base de datos</strong> generada
+                                <strong>SomosSST S.A.S. no es propietaria ni responsable de la base de datos</strong> generada
                                 por el uso de la IA por parte del usuario. Los resultados generados por la IA pueden
                                 contener errores, imprecisiones o información desactualizada.
                             </p>
@@ -277,9 +277,9 @@ export default function TermsOfServicePage() {
                     <h3 className="text-lg font-bold text-text-primary">¿Preguntas sobre estos términos?</h3>
                     <p className="mt-2 text-sm text-text-secondary">Contáctenos para cualquier consulta.</p>
                     <div className="mt-4 flex flex-wrap items-center justify-center gap-6 text-sm text-text-secondary">
-                        <a href="mailto:info@grupowappy.com" className="flex items-center gap-2 rounded-lg bg-surface-primary px-4 py-2 transition-all hover:bg-surface-hover hover:text-green-500">
+                        <a href="mailto:info@somossst.com" className="flex items-center gap-2 rounded-lg bg-surface-primary px-4 py-2 transition-all hover:bg-surface-hover hover:text-green-500">
                             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                            info@grupowappy.com
+                            info@somossst.com
                         </a>
                         <a href="tel:+573021268625" className="flex items-center gap-2 rounded-lg bg-surface-primary px-4 py-2 transition-all hover:bg-surface-hover hover:text-green-500">
                             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
@@ -291,7 +291,7 @@ export default function TermsOfServicePage() {
                         </span>
                     </div>
                     <p className="mt-6 text-xs text-text-tertiary">
-                        WAPPY LTDA · NIT 901437310-3 · Todos los derechos reservados © {new Date().getFullYear()}
+                        SomosSST S.A.S. · NIT 901437310-3 · Todos los derechos reservados © {new Date().getFullYear()}
                     </p>
                     <p className="mt-2 text-xs text-text-tertiary">
                         Al utilizar la plataforma, usted reconoce que ha leído estos Términos de Servicio y acepta estar sujeto a ellos.

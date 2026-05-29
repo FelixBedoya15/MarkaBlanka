@@ -1160,7 +1160,7 @@ const CanvasSlidesEditor: React.FC<CanvasSlidesEditorProps> = ({ initialContent,
         onMouseMove={handleMouseMove}
         onClick={handlePresentationClick}
       >
-        {/* Glow lights in backgrounds (WAPPY rules) */}
+        {/* Glow lights in backgrounds (SomosSST rules) */}
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -1784,7 +1784,7 @@ const CanvasSlidesEditor: React.FC<CanvasSlidesEditorProps> = ({ initialContent,
               </div>
 
               <div className="flex justify-between items-center text-xs font-semibold text-white/40 z-10 border-t border-white/5 pt-4">
-                <span>Wappy Canvas Presentation</span>
+                <span>SomosSST Canvas Presentation</span>
                 <span>SST Pro</span>
               </div>
             </div>

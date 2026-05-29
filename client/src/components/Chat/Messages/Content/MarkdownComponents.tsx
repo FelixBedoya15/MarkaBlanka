@@ -9,7 +9,7 @@ import { useCodeBlockContext } from '~/Providers/CodeBlockContext';
 import { handleDoubleClick } from '~/utils';
 import useLocalize from '~/hooks/useLocalize';
 import store from '~/store/user';
-import { WappyCard } from './WappyCard';
+import { SomosSSTCard } from './SomosSSTCard';
 
 type TCodeProps = {
   inline?: boolean;
@@ -33,9 +33,9 @@ export const code: React.ElementType = memo(({ className, children }: TCodeProps
       ? children.join('')
       : children?.toString() || '';
 
-  const isWappyCard = (lang === 'wappy-card' || lang === 'card') && codeString.trim().startsWith('{');
+  const isWappyCard = (lang === 'wappy-card' || lang === 'card' || lang === 'somossst-card' || lang === 'somos-sst-card') && codeString.trim().startsWith('{');
 
-  const { getNextIndex, resetCounter } = useCodeBlockContext();
+  const { resetCounter, getNextIndex } = useCodeBlockContext();
   const blockIndex = useRef(getNextIndex(isMath || isSingleLine || isWappyCard)).current;
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export const code: React.ElementType = memo(({ className, children }: TCodeProps
   if (isMath) {
     return <>{children}</>;
   } else if (isWappyCard) {
-    return <WappyCard content={codeString} />;
+    return <SomosSSTCard content={codeString} />;
   } else if (isSingleLine) {
     return (
       <code onDoubleClick={handleDoubleClick} className={className}>
@@ -74,12 +74,12 @@ export const codeNoExecution: React.ElementType = memo(({ className, children }:
       ? children.join('')
       : children?.toString() || '';
 
-  const isWappyCard = (lang === 'wappy-card' || lang === 'card') && codeString.trim().startsWith('{');
+  const isWappyCard = (lang === 'wappy-card' || lang === 'card' || lang === 'somossst-card' || lang === 'somos-sst-card') && codeString.trim().startsWith('{');
 
   if (lang === 'math') {
     return children;
   } else if (isWappyCard) {
-    return <WappyCard content={codeString} />;
+    return <SomosSSTCard content={codeString} />;
   } else if (typeof children === 'string' && children.split('\n').length === 1) {
     return (
       <code onDoubleClick={handleDoubleClick} className={className}>

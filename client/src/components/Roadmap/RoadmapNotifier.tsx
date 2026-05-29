@@ -82,7 +82,7 @@ export default function RoadmapNotifier() {
               <div>
                 <h4 className="font-bold text-sm mb-1">¡Nueva Actualización!</h4>
                 <p className="text-xs text-teal-50 leading-relaxed opacity-90 line-clamp-2">
-                  Hemos lanzado: <strong>{latestTitle || 'Mejoras en WAPPY IA'}</strong>
+                  Hemos lanzado: <strong>{latestTitle || 'Mejoras en SomosSST'}</strong>
                 </p>
                 
                 <div className="mt-3 flex items-center gap-1 text-xs font-semibold text-white/90 group-hover:text-white group-hover:gap-2 transition-all">

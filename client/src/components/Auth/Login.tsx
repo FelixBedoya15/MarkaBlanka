@@ -111,7 +111,7 @@ function Login() {
           Error de Conexión
         </h2>
         <p className="mb-6 text-sm text-gray-600 dark:text-gray-400 max-w-xs px-2">
-          No pudimos conectar con el servidor de WAPPY IA. Por favor, revisa tu conexión o intenta recargar.
+          No pudimos conectar con el servidor de SomosSST. Por favor, revisa tu conexión o intenta recargar.
         </p>
         <button
           onClick={() => window.location.reload()}

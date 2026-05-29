@@ -246,7 +246,7 @@
   {
     "name": "Gestor de Blog",
     "pluginKey": "blog_editor",
-    "description": "Permite al agente crear, leer, listar, editar o eliminar borradores de artículos de blog directamente en la base de datos de Wappy. El usuario podrá revisar el borrador, subir imágenes de portada y publicar el artículo desde su panel administrativo.",
+    "description": "Permite al agente crear, leer, listar, editar o eliminar borradores de artículos de blog directamente en la base de datos de SomosSST. El usuario podrá revisar el borrador, subir imágenes de portada y publicar el artículo desde su panel administrativo.",
     "icon": "https://cdn-icons-png.flaticon.com/512/3512/3512613.png",
     "authConfig": []
   }

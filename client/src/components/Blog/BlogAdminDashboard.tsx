@@ -99,7 +99,7 @@ export default function BlogAdminDashboard() {
                                 Administrar Blog
                             </h1>
                             <p className="mt-1 text-sm md:text-base text-gray-500 dark:text-gray-400">
-                                Gestiona las entradas del blog de WAPPY IA.
+                                Gestiona las entradas del blog de SomosSST.
                             </p>
                         </div>
                     </div>

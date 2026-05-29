@@ -1,5 +1,5 @@
 # 🧠 Prompts de Ingeniería de Video para Google Flow / Veo 3.0
-**Campaña: Rentabilidad IA + SST (Wappy IA)**
+**Campaña: Rentabilidad IA + SST (SomosSST)**
 
 Este documento contiene los prompts altamente detallados y optimizados para ingeniería de video. Utilizan palabras clave de consistencia de personajes, cinematografía, iluminación y movimiento de cámara para garantizar que **Google Flow / Veo 3.0** genere clips perfectos y estables de tu avatar.
 
@@ -40,7 +40,7 @@ Medium close-up, 9:16 aspect ratio. The reference professional Latino male consu
 
 ### ✍️ Prompt para Flow:
 ```text
-Medium shot, 16:9 aspect ratio. The reference professional Latino male consultant stands on the left side of the frame, facing slightly towards the right. He is speaking dynamically and pointing enthusiastically with his right hand towards the empty space on the right, explaining a digital tool. He is speaking the exact words in Spanish: "Primero: Crea formatos estilizados y 100% editables para el SG-SST en segundos con el Canvas inteligente de Wappy. Diseños impecables sin copiar y pegar.". Confident and persuasive expression, natural body language, smooth hand gestures. The synchronized audio generated must be in fluent Spanish with a clear, warm, and highly professional Colombian accent. Background is a solid, bright, clean chromakey green screen (#00FF00) with flat, even studio lighting. 4k resolution, highly detailed character rendering, ultra-realistic.
+Medium shot, 16:9 aspect ratio. The reference professional Latino male consultant stands on the left side of the frame, facing slightly towards the right. He is speaking dynamically and pointing enthusiastically with his right hand towards the empty space on the right, explaining a digital tool. He is speaking the exact words in Spanish: "Primero: Crea formatos estilizados y 100% editables para el SG-SST en segundos con el Canvas inteligente de SomosSST. Diseños impecables sin copiar y pegar.". Confident and persuasive expression, natural body language, smooth hand gestures. The synchronized audio generated must be in fluent Spanish with a clear, warm, and highly professional Colombian accent. Background is a solid, bright, clean chromakey green screen (#00FF00) with flat, even studio lighting. 4k resolution, highly detailed character rendering, ultra-realistic.
 ```
 
 ---

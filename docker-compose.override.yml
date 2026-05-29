@@ -15,8 +15,8 @@
 #   api:
 #     volumes:
 #     - type: bind
-#       source: ./librechat.yaml
-#       target: /app/librechat.yaml
+#       source: ./somossst.yaml
+#       target: /app/somossst.yaml
 #     image: ghcr.io/danny-avila/librechat:latest
 
 # ---------------------------------------------------
@@ -42,8 +42,8 @@ services:
       #  target: /app/.env
       #- ./uploads:/app/uploads
       #- ./logs:/app/logs
-      # Si también quieres usar el archivo de configuración librechat.yaml (opcional, como en tu ejemplo)
-      #- ./librechat.yaml:/app/librechat.yaml
+      # Si también quieres usar el archivo de configuración somossst.yaml (opcional, como en tu ejemplo)
+      #- ./somossst.yaml:/app/somossst.yaml
 
       # === 2. SERVICIO DE MONGODB (Persistencia de Datos) ===
   mongodb:
@@ -84,12 +84,12 @@ volumes:
     # version: '3.4'
     # services:
 
-    # # USE LIBRECHAT CONFIG FILE
+    # # USE SOMOSSST CONFIG FILE
     #   api:
     #     volumes:
     #     - type: bind
-    #       source: ./librechat.yaml
-    #       target: /app/librechat.yaml
+    #       source: ./somossst.yaml
+    #       target: /app/somossst.yaml
 
     #  mongodb:
     #     image: mongo:4.4.18

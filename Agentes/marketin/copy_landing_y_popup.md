@@ -1,5 +1,5 @@
 # Copy y Textos para Landing Page y Pop-up de Captura
-**Proyecto:** WAPPY IA / Programa Somos SST  
+**Proyecto:** SomosSST / Programa Somos SST  
 **Objetivo:** Capturar leads y vender el plan anual  
 
 ---
@@ -9,7 +9,7 @@
 *(El video se pausa y este cuadro aparece en el centro de la pantalla)*
 
 **[TÍTULO]**  
-**¡Pausa Rápida! Estás a punto de ver WAPPY IA en acción 🤖**
+**¡Pausa Rápida! Estás a punto de ver SomosSST en acción 🤖**
 
 **[TEXTO]**  
 Déjame tus datos para enviarte inmediatamente el acceso a la plataforma y tu **Código de Descuento Exclusivo** al final de la clase.
@@ -45,7 +45,7 @@ La clase gratuita donde descubrirás el método de la *SST Bio-Individual* y la 
 **[DEBAJO DEL VIDEO - Texto que aparece *solo después* de que el video llega al minuto 20]**
 
 **[TÍTULO SECUNDARIO]**  
-**Únete al Programa SOMOS SST y Desbloquea Todo el Poder de WAPPY IA**
+**Únete al Programa SOMOS SST y Desbloquea Todo el Poder de SomosSST**
 
 **[BOTONES DE PAGO]**  
 *(Aquí muestras las opciones de pago Wompi)*
@@ -62,7 +62,7 @@ La clase gratuita donde descubrirás el método de la *SST Bio-Individual* y la 
 
 **¿Qué obtienes inmediatamente al inscribirte?**
 
-✅ **Acceso VIP a WAPPY IA (Plan Pro):** Desbloqueas Inteligencia Predictiva, Editor de Archivos con IA, y los más de 15 agentes expertos en SST (Abogado RIT, Matriz IPEVAR, etc.).  
+✅ **Acceso VIP a SomosSST (Plan Pro):** Desbloqueas Inteligencia Predictiva, Editor de Archivos con IA, y los más de 15 agentes expertos en SST (Abogado RIT, Matriz IPEVAR, etc.).  
 ✅ **Programa "Somos SST" en el Aula de Estudio:** El entrenamiento estilo Netflix dentro de la plataforma donde Félix Bedoya te enseña a implementar la plataforma y escalar tu carrera profesional.  
 ✅ **Automatización Documental Ilimitada:** Genera políticas, matrices GTC-45 completas y Reglamentos Internos en fracciones de tiempo.  
 ✅ **Firmas Digitales y Exportación Profesional:** Descarga todo en Word o PDF, firmado digitalmente, listo para entregar a tu cliente o gerente.  
@@ -72,12 +72,12 @@ La clase gratuita donde descubrirás el método de la *SST Bio-Individual* y la 
 
 ### 3. SECCIÓN SOBRE EL CREADOR (Félix Bedoya)
 
-**¿Quién soy y por qué construí WAPPY IA?**
+**¿Quién soy y por qué construí SomosSST?**
 
 *(Foto tuya corporativa)*
 
 **Félix Bedoya**  
-*CEO & Fundador de WAPPY IA*  
+*CEO & Fundador de SomosSST*  
 Psicólogo, Especialista en SST y Programador Senior.
 
 "He trabajado por más de 8 años de la mano con las ARLs más grandes del país (Sura, Bolívar, AXA Colpatria, Colmena). Vi cómo excelentes profesionales SST se estancaban por culpa del desgaste documental manual. Por eso, decidí usar mi experiencia como programador y especialista para crear la única herramienta que nosotros, los prevencionistas, realmente necesitamos."
@@ -87,10 +87,10 @@ Psicólogo, Especialista en SST y Programador Senior.
 ### 4. GARANTÍA Y PREGUNTAS FRECUENTES
 
 **¿Tengo garantía?**  
-Sí. Si en los primeros 7 días sientes que WAPPY IA no te ahorra tiempo ni te ayuda a profesionalizar tus entregables, te devolvemos el 100% de tu inversión. Cero riesgo para ti.
+Sí. Si en los primeros 7 días sientes que SomosSST no te ahorra tiempo ni te ayuda a profesionalizar tus entregables, te devolvemos el 100% de tu inversión. Cero riesgo para ti.
 
 **¿Necesito ser experto en tecnología para usarla?**  
-No. WAPPY IA está diseñada para funcionar como un chat. Si sabes usar WhatsApp, sabes usar WAPPY. Y para sacarle el máximo provecho, tienes mi curso paso a paso en el Aula de Estudio.
+No. SomosSST está diseñada para funcionar como un chat. Si sabes usar WhatsApp, sabes usar SomosSST. Y para sacarle el máximo provecho, tienes mi curso paso a paso en el Aula de Estudio.
 
 **¿La plataforma cumple con la normatividad colombiana?**  
 Absolutamente. La IA está entrenada bajo el Decreto 1072, la Resolución 0312, la metodología GTC-45 y las últimas reformas laborales de 2026. Es 100% enfocada en Colombia.

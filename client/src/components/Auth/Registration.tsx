@@ -164,7 +164,7 @@ const Registration: React.FC = () => {
             aria-label="Registration form"
             method="POST"
             onSubmit={handleSubmit((data: TRegisterUser) => {
-              const referral = localStorage.getItem('wappy_ref') || undefined;
+              const referral = localStorage.getItem('somossst_ref') || undefined;
               registerUser.mutate({
                 ...data,
                 token: token ?? undefined,
@@ -257,7 +257,7 @@ const Registration: React.FC = () => {
                 />
               </div>
               <label htmlFor="terms" className="text-sm text-text-secondary">
-                Acepto los <a href="/terms" className="font-semibold text-green-600 hover:text-green-500 hover:underline" target="_blank" rel="noopener noreferrer">Términos de Servicio</a> y la <a href="/privacy" className="font-semibold text-green-600 hover:text-green-500 hover:underline" target="_blank" rel="noopener noreferrer">Política de Privacidad</a> de WAPPY IA.
+                Acepto los <a href="/terms" className="font-semibold text-green-600 hover:text-green-500 hover:underline" target="_blank" rel="noopener noreferrer">Términos de Servicio</a> y la <a href="/privacy" className="font-semibold text-green-600 hover:text-green-500 hover:underline" target="_blank" rel="noopener noreferrer">Política de Privacidad</a> de Somos SST.
               </label>
             </div>
 

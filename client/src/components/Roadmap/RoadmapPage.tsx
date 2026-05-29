@@ -68,7 +68,7 @@ const defaultSeedItems: RoadmapItem[] = [
   {
     _id: 'seed-4',
     title: 'El Primer Gestor Inteligente',
-    description: 'El núcleo de operaciones preventivas de WAPPY IA cobró vida permitiendo completar el ciclo PHVA con automatizaciones robustas para Políticas, Matrices Legales y Dashboards Predictivos.',
+    description: 'El núcleo de operaciones preventivas de SomosSST cobró vida permitiendo completar el ciclo PHVA con automatizaciones robustas para Políticas, Matrices Legales y Dashboards Predictivos.',
     version: 'V2.0.0',
     date: new Date(Date.now() - 86400000 * 15).toISOString(),
     type: 'Nuevo',
@@ -92,7 +92,7 @@ const defaultSeedItems: RoadmapItem[] = [
   {
     _id: 'seed-1',
     title: 'Sistema Fundacional: Chat Inteligente',
-    description: 'Lanzamiento original de WAPPY IA (Tenshi). Motores conversacionales adaptados al contexto corporativo como núcleo base de operaciones.',
+    description: 'Lanzamiento original de SomosSST (Tenshi). Motores conversacionales adaptados al contexto corporativo como núcleo base de operaciones.',
     version: 'V1.0.0',
     date: new Date(Date.now() - 86400000 * 100).toISOString(),
     type: 'Anuncio',
@@ -192,7 +192,7 @@ export default function RoadmapPage() {
             Hoja de Ruta Tecnológica
           </h1>
           <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Explora la evolución de WAPPY IA. Desde nuestro primer chat fundacional hasta el increíble gestor avanzado predictivo, mantente siempre a la vanguardia.
+            Explora la evolución de SomosSST. Desde nuestro primer chat fundacional hasta el increíble gestor avanzado predictivo, mantente siempre a la vanguardia.
           </p>
           
           <div className="flex flex-wrap justify-center gap-4 mt-8">

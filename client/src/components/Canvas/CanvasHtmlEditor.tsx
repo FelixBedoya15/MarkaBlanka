@@ -301,7 +301,7 @@ const CanvasHtmlEditor: React.FC<CanvasHtmlEditorProps> = ({
       </svg>
     </div>
     <h1 class="text-2xl font-black bg-gradient-to-r from-teal-400 via-emerald-400 to-cyan-400 bg-clip-text text-transparent mb-3">
-      Prototipo de Código WAPPY
+      Prototipo de Código SomosSST
     </h1>
     <p class="text-xs text-slate-400 leading-relaxed mb-6">
       Bienvenido al sandbox interactivo de prototipos en HTML. Inserta componentes premium de SST desde la barra lateral izquierda y observa cómo cobran vida en tiempo real en la vista previa.

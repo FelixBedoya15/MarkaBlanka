@@ -284,7 +284,7 @@ const PWAInstaller = () => {
                     d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                   />
                 </svg>
-                Instalar WAPPY IA
+                Instalar SomosSST
               </h3>
               <button
                 onClick={() => setIsModalOpen(false)}
@@ -342,7 +342,7 @@ const PWAInstaller = () => {
               {activeTab === 'ios' && (
                 <div className="flex flex-col gap-4">
                   <p className="font-semibold text-gray-800 dark:text-gray-200">
-                    Sigue estos pasos en tu dispositivo Apple para instalar WAPPY IA:
+                    Sigue estos pasos en tu dispositivo Apple para instalar SomosSST:
                   </p>
                   <ol className="flex flex-col gap-3">
                     <li className="flex items-start gap-2.5">
@@ -458,7 +458,7 @@ const PWAInstaller = () => {
               {activeTab === 'desktop' && (
                 <div className="flex flex-col gap-4">
                   <p className="font-semibold text-gray-800 dark:text-gray-200">
-                    Instala WAPPY IA en tu computador portátil o de mesa:
+                    Instala SomosSST en tu computador portátil o de mesa:
                   </p>
                   <div className="flex flex-col gap-3">
                     <div className="rounded-lg bg-gray-50 p-3 dark:bg-gray-900/30">
@@ -471,7 +471,7 @@ const PWAInstaller = () => {
                         navegador.
                         <br />
                         2. Alternativamente, abre el menú de tres puntos (Chrome) o tres rayas
-                        (Edge) y selecciona <strong>&quot;Instalar WAPPY IA&quot;</strong>.
+                        (Edge) y selecciona <strong>&quot;Instalar SomosSST&quot;</strong>.
                       </p>
                     </div>
                     <div className="rounded-lg bg-gray-50 p-3 dark:bg-gray-900/30">
@@ -483,7 +483,7 @@ const PWAInstaller = () => {
                         <strong>Archivo</strong> en la barra superior.
                         <br />
                         2. Elige <strong>&quot;Añadir al Dock...&quot;</strong>, confirma el nombre
-                        y pulsa en &quot;Añadir&quot;. WAPPY IA se abrirá en su propia ventana
+                        y pulsa en &quot;Añadir&quot;. SomosSST se abrirá en su propia ventana
                         dedicada.
                       </p>
                     </div>

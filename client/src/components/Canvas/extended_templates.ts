@@ -1,5 +1,5 @@
 /**
- * Extended Corporate Templates for WAPPY Canvas
+ * Extended Corporate Templates for SomosSST Canvas
  * Complete, compliant, and beautifully designed in Spanish
  * Aligned with Colombian Labor Laws, Decree 1072 of 2015, Ley 2365 de 2024, C-593 de 2014, Ley 2466 de 2025 and RIT.
  */

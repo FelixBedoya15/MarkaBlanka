@@ -60,7 +60,7 @@ export default function ComunidadPage() {
   // Access State (Free Leads or Paid Purchases)
   const [isAccessChecking, setIsAccessChecking] = useState(true);
   const [isAccessGranted, setIsAccessGranted] = useState(false);
-  const [userEmail, setUserEmail] = useState(() => localStorage.getItem('wappy_comunidad_email') || '');
+  const [userEmail, setUserEmail] = useState(() => localStorage.getItem('somossst_comunidad_email') || '');
   const [userFullName, setUserFullName] = useState('');
   
   // Checkout & Recovery Modal States
@@ -74,7 +74,7 @@ export default function ComunidadPage() {
   // Free Lead Modal State (Active when requiresPayment is false)
   const [showLeadModal, setShowLeadModal] = useState(false);
   const [isLeadCaptured, setIsLeadCaptured] = useState(() => {
-    return localStorage.getItem('wappy_lead_captured') === 'true';
+    return localStorage.getItem('somossst_lead_captured') === 'true';
   });
 
   // Access Recovery
@@ -207,7 +207,7 @@ export default function ComunidadPage() {
     if (!user) return;
     if (isLeadCaptured) return;
 
-    const fullName = user.name || user.username || 'Usuario WAPPY';
+    const fullName = user.name || user.username || 'Usuario SomosSST';
     const email = user.email || '';
     const phone = user.phoneNumber || user.phone || '';
 
@@ -220,8 +220,8 @@ export default function ComunidadPage() {
       videoUrl,
     })
     .then(() => {
-      localStorage.setItem('wappy_lead_captured', 'true');
-      localStorage.setItem('wappy_lead_data', JSON.stringify({ 
+      localStorage.setItem('somossst_lead_captured', 'true');
+      localStorage.setItem('somossst_lead_data', JSON.stringify({ 
         fullName, 
         email, 
         phone 
@@ -255,7 +255,7 @@ export default function ComunidadPage() {
 
     const initializeYTPlayer = () => {
       if (window.YT && window.YT.Player) {
-        ytPlayer = new window.YT.Player('wappy-yt-player', {
+        ytPlayer = new window.YT.Player('somossst-yt-player', {
           events: {
             onReady: (event: any) => {
               setDuration(event.target.getDuration());
@@ -412,7 +412,7 @@ export default function ComunidadPage() {
     setIsVideoFinished(true);
     
     // Save completion state to DB if email is available (in free/paid modes)
-    const email = userEmail || localStorage.getItem('wappy_lead_data') ? JSON.parse(localStorage.getItem('wappy_lead_data') || '{}').email : '';
+    const email = userEmail || localStorage.getItem('somossst_lead_data') ? JSON.parse(localStorage.getItem('somossst_lead_data') || '{}').email : '';
     if (email) {
       try {
         await axios.post('/api/comunidad/video-finished', { email });
@@ -503,7 +503,7 @@ export default function ComunidadPage() {
       return;
     }
     if (!acceptedPolicies) {
-      setCheckoutError('Debes aceptar las políticas de WAPPY para continuar.');
+      setCheckoutError('Debes aceptar las políticas de SomosSST para continuar.');
       return;
     }
 
@@ -517,7 +517,7 @@ export default function ComunidadPage() {
       });
 
       if (data.freeAccess || data.alreadyPaid) {
-        localStorage.setItem('wappy_comunidad_email', checkoutEmail.trim());
+        localStorage.setItem('somossst_comunidad_email', checkoutEmail.trim());
         setUserEmail(checkoutEmail.trim());
         setIsAccessGranted(true);
         setShowLeadModal(false);
@@ -566,7 +566,7 @@ export default function ComunidadPage() {
           setIsAccessChecking(true);
           const response = await axios.post('/api/comunidad/verify', { transactionId: transaction.id });
           if (response.data.success) {
-            localStorage.setItem('wappy_comunidad_email', email);
+            localStorage.setItem('somossst_comunidad_email', email);
             setUserEmail(email);
             setIsAccessGranted(true);
             setShowLeadModal(false);
@@ -600,7 +600,7 @@ export default function ComunidadPage() {
     try {
       const response = await axios.post('/api/comunidad/check-access', { email: recoveryEmail.trim() });
       if (response.data.isPaid) {
-        localStorage.setItem('wappy_comunidad_email', recoveryEmail.trim());
+        localStorage.setItem('somossst_comunidad_email', recoveryEmail.trim());
         setUserEmail(recoveryEmail.trim());
         setIsAccessGranted(true);
         setRecoverySuccess('¡Acceso recuperado con éxito! Bienvenido de vuelta.');
@@ -641,7 +641,7 @@ export default function ComunidadPage() {
       return;
     }
     if (!acceptedPolicies) {
-      setCheckoutError('Debes aceptar las políticas de WAPPY para continuar.');
+      setCheckoutError('Debes aceptar las políticas de SomosSST para continuar.');
       return;
     }
 
@@ -655,8 +655,8 @@ export default function ComunidadPage() {
         videoUrl,
       });
 
-      localStorage.setItem('wappy_lead_captured', 'true');
-      localStorage.setItem('wappy_lead_data', JSON.stringify({ 
+      localStorage.setItem('somossst_lead_captured', 'true');
+      localStorage.setItem('somossst_lead_data', JSON.stringify({ 
         fullName: checkoutFullName, 
         email: checkoutEmail, 
         phone: checkoutPhone 
@@ -877,7 +877,7 @@ export default function ComunidadPage() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", url);
-    link.setAttribute("download", `WAPPY_${isLeads ? 'Leads' : 'Pagos'}_Comunidad_${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute("download", `SOMOSSST_${isLeads ? 'Leads' : 'Pagos'}_Comunidad_${new Date().toISOString().split('T')[0]}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -916,10 +916,10 @@ export default function ComunidadPage() {
           <div className="flex items-center gap-3">
             <div className="relative">
               <div className="absolute inset-0 bg-emerald-500/20 blur-md rounded-xl"></div>
-              <img src="/assets/logo.png" alt="WAPPY Logo" className="h-10 w-auto relative z-10" />
+              <img src="/assets/logo.png" alt="SomosSST Logo" className="h-10 w-auto relative z-10" />
             </div>
             <span className="text-xl font-bold tracking-tight text-text-primary outfit">
-              WAPPY
+              Somos SST
             </span>
           </div>
 
@@ -928,9 +928,9 @@ export default function ComunidadPage() {
               <>
                 <button
                   onClick={() => {
-                    localStorage.removeItem('wappy_comunidad_email');
-                    localStorage.removeItem('wappy_lead_captured');
-                    localStorage.removeItem('wappy_lead_data');
+                    localStorage.removeItem('somossst_comunidad_email');
+                    localStorage.removeItem('somossst_lead_captured');
+                    localStorage.removeItem('somossst_lead_data');
                     setIsAccessGranted(false);
                     setIsLeadCaptured(false);
                     setShowLeadModal(false);
@@ -973,7 +973,7 @@ export default function ComunidadPage() {
                 className="px-4 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white dark:text-slate-950 font-bold transition-all duration-300 text-xs shadow-lg shadow-emerald-500/25 flex items-center gap-1.5 hover:scale-105"
               >
                 <UserCheck className="w-3.5 h-3.5" />
-                Acceder a WAPPY
+                Acceder a SomosSST
               </button>
             )}
           </div>
@@ -1409,7 +1409,7 @@ export default function ComunidadPage() {
                       <span className="text-[10px] text-text-secondary leading-normal group-hover:text-text-primary transition-colors">
                         Acepto la{' '}
                         <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-emerald-500 underline">política de privacidad</a>{' '}
-                        y el tratamiento de datos de WAPPY.
+                        y el tratamiento de datos de SomosSST.
                       </span>
                     </label>
 
@@ -1510,7 +1510,7 @@ export default function ComunidadPage() {
             
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-semibold mb-6 animate-pulse">
               <Sparkles className="w-3.5 h-3.5" />
-              CAPACITACIÓN EXCLUSIVA WAPPY
+              CAPACITACIÓN EXCLUSIVA SOMOSSST
             </div>
 
             <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-text-primary mb-6 leading-tight max-w-3xl outfit">
@@ -1556,7 +1556,7 @@ export default function ComunidadPage() {
             >
               {isYouTube ? (
                 <iframe
-                  id="wappy-yt-player"
+                  id="somossst-yt-player"
                   ref={iframeRef}
                   src={`https://www.youtube.com/embed/${youtubeId}?enablejsapi=1&controls=0&disablekb=1&rel=0&modestbranding=1&fs=0&iv_load_policy=3&showinfo=0`}
                   className="w-full h-full object-cover pointer-events-none select-none border-0"
@@ -1616,7 +1616,7 @@ export default function ComunidadPage() {
                       </div>
                       <div>
                         <h3 className="text-base font-bold text-text-primary leading-tight outfit">
-                          {actualRequiresPayment ? 'Desbloquear Capacitación Completa' : 'Acceso Exclusivo WAPPY'}
+                          {actualRequiresPayment ? 'Desbloquear Capacitación Completa' : 'Acceso Exclusivo SomosSST'}
                         </h3>
                         <p className="text-[10px] text-text-secondary">
                           {actualRequiresPayment 
@@ -1677,7 +1677,7 @@ export default function ComunidadPage() {
                           className="mt-0.5 h-4 w-4 rounded border-border-medium bg-surface-secondary text-emerald-500 focus:ring-emerald-500/20"
                         />
                         <span className="text-[10px] text-text-secondary leading-normal group-hover:text-text-primary">
-                          Acepto las <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-emerald-500 underline">políticas de privacidad</a> y el tratamiento de datos de WAPPY.
+                          Acepto las <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-emerald-500 underline">políticas de privacidad</a> y el tratamiento de datos de SomosSST.
                         </span>
                       </label>
 
@@ -1726,7 +1726,7 @@ export default function ComunidadPage() {
 
                     <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-slate-950/90 border border-slate-800 text-[10px] text-slate-300 select-none">
                       <Lock className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-                      <span>Reproducción Protegida WAPPY</span>
+                      <span>Reproducción Protegida SomosSST</span>
                     </div>
                   </div>
                 </div>
@@ -1822,7 +1822,7 @@ export default function ComunidadPage() {
           <span>·</span>
           <a href="/terms" className="hover:text-emerald-500 transition-colors">Términos de Servicio</a>
         </div>
-        <p>© {new Date().getFullYear()} WAPPY. Todos los derechos reservados.</p>
+        <p>© {new Date().getFullYear()} SomosSST. Todos los derechos reservados.</p>
       </footer>
     </div>
   );

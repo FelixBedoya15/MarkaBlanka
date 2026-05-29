@@ -44,7 +44,7 @@ const PLANS = [
             'Hasta 30 conversaciones abiertas',
             '+ de 15 Agentes Expertos en SST',
             'Aula de estudio',
-            'Blog WAPPY',
+            'Blog SomosSST',
             'Podrá ingresar 4 claves API de Gemini',
         ],
         notIncluded: ['Somos SST', 'Editor de Archivos con IA'],
@@ -67,7 +67,7 @@ const PLANS = [
             '+ de 15 Agentes Expertos en SST',
             '**Agente Matriz IPEVAR**',
             'Aula de estudio',
-            'Blog WAPPY',
+            'Blog SomosSST',
             'Podrá ingresar 10 claves API de Gemini',
         ],
         notIncluded: ['Editor de Archivos con IA'],
@@ -77,7 +77,7 @@ const PLANS = [
         key: 'pro',
         name: 'Pro',
         price: '$66.300',
-        tagline: 'El poder total de WAPPY IA',
+        tagline: 'El poder total de SomosSST',
         accentColor: 'text-amber-500',
         iconColor: 'text-amber-500',
         gradientBg: 'from-amber-500/5 to-orange-500/10',
@@ -90,7 +90,7 @@ const PLANS = [
             '+ de 15 Agentes Expertos en SST',
             '**Agente Matriz IPEVAR**',
             'Aula de estudio',
-            'Blog WAPPY',
+            'Blog SomosSST',
             'Análisis en Vivo',
             'Centro de Inteligencia Predictiva',
             'Crea tus propios Agentes de IA',
@@ -189,7 +189,7 @@ const APP_PLANS = [
             'Hasta 30 conversaciones abiertas',
             'Podrá ingresar 4 claves API de Gemini',
         ],
-        notIncluded: ['Blog WAPPY', 'Somos SST', 'Editor de Archivos con IA'],
+        notIncluded: ['Blog SomosSST', 'Somos SST', 'Editor de Archivos con IA'],
         popular: true,
     }
 ];
@@ -776,7 +776,7 @@ export default function PlansPage() {
     }, [checkoutPlan, billingInterval, promoValidated, guestData, showToast]);
 
     const handleManageSubscription = useCallback(async () => {
-        showToast({ message: 'Para modificar o cancelar tu plan, comunícate con soporte@wappy.co', status: 'info' });
+        showToast({ message: 'Para modificar o cancelar tu plan, comunícate con soporte@somossst.com', status: 'info' });
     }, [showToast]);
 
     return (
@@ -916,7 +916,7 @@ export default function PlansPage() {
                                                     setPromoValidated(null);
                                                     setPromoError('');
                                                 }}
-                                                placeholder="Ej. WAPPY50"
+                                                placeholder="Ej. SOMOSSST50"
                                                 className="flex-1 rounded-xl border border-border-light bg-surface-secondary px-4 py-2.5 text-sm font-mono uppercase focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-colors"
                                             />
                                             <button
@@ -1142,7 +1142,7 @@ export default function PlansPage() {
                                                     className="flex justify-center mb-4 bg-white p-2 rounded-xl mx-auto w-fit cursor-pointer hover:ring-2 hover:ring-green-400 transition-all relative group"
                                                     onClick={() => setIsQRModalOpen(true)}
                                                 >
-                                                    <img src="/assets/QRWAPPY.png" alt="QR Nequi Bancolombia" className="h-40 w-40 object-contain rounded-lg shadow-sm" />
+                                                    <img src="/assets/QRSOMOSSST.png" alt="QR Nequi Bancolombia" className="h-40 w-40 object-contain rounded-lg shadow-sm" />
                                                     <div className="absolute inset-0 bg-black/60 rounded-xl flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                                                         <ZoomIn className="w-8 h-8 text-white mb-1" />
                                                         <span className="text-white text-xs font-bold">Ampliar</span>
@@ -1322,7 +1322,7 @@ export default function PlansPage() {
                                 Planes y Precios
                             </div>
                             <h1 className="mt-2 bg-gradient-to-r from-green-500 via-emerald-500 to-cyan-500 bg-clip-text text-4xl font-extrabold tracking-tight text-transparent">
-                                Elige tu plan de WAPPY IA
+                                Elige tu plan de SomosSST
                             </h1>
                             <p className="mx-auto mt-3 max-w-lg text-base text-text-secondary">
                                 Cancela cuando quieras desde tu portal de suscripción. Selecciona la facturación que más te convenga.
@@ -1753,7 +1753,7 @@ export default function PlansPage() {
                                 const td = customPlanConfig.timeDiscounts || { daily: 0, weekly: 0, monthly: 0, quarterly: 5, semiannual: 10, annual: 15 };
 
                                 const tools = [
-                                    { key: 'blog', name: 'Blog WAPPY', desc: 'Contenido y artículos', price: tp.blog, emoji: '📝' },
+                                    { key: 'blog', name: 'Blog SomosSST', desc: 'Contenido y artículos', price: tp.blog, emoji: '📝' },
                                     { key: 'somos_sst', name: 'Somos SST', desc: 'Gamificación SST completa', price: tp.somos_sst, emoji: '🎮' },
                                     { key: 'editor_archivos', name: 'Editor de Archivos', desc: 'Editor documental con IA', price: tp.editor_archivos, emoji: '📄' },
                                     { key: 'analisis_vivo', name: 'Análisis en Vivo', desc: 'Análisis en tiempo real', price: tp.analisis_vivo, emoji: '📊' },
@@ -2123,7 +2123,7 @@ export default function PlansPage() {
                                 </a>
                             </div>
                             <p className="mt-3 text-xs text-text-tertiary">
-                                WAPPY LTDA · NIT 901437310-3 · Todos los derechos reservados ©
+                                SomosSST S.A.S. · NIT 901437310-3 · Todos los derechos reservados ©
                             </p>
                         </div>
                     </>
@@ -2141,14 +2141,14 @@ export default function PlansPage() {
                         </button>
                         <h3 className="text-xl font-black text-center text-text-primary mb-4">Código QR Nequi / Bancolombia</h3>
                         <div className="bg-white rounded-2xl p-2 mx-auto relative cursor-pointer" onClick={() => setIsQRModalOpen(false)}>
-                            <img src="/assets/QRWAPPY.png" alt="QR Nequi Full Size" className="w-full h-auto object-contain rounded-xl" />
+                            <img src="/assets/QRSOMOSSST.png" alt="QR Nequi Full Size" className="w-full h-auto object-contain rounded-xl" />
                         </div>
                         <p className="text-center text-text-secondary text-sm mt-4">
                             Escanea este código desde tu App Bancolombia o Nequi para transferir <strong>${finalCheckoutPrice.toLocaleString('es-CO')}</strong>.
                         </p>
                         <a 
-                            href="/assets/QRWAPPY.png"
-                            download="QR_Nequi_Wappy.png"
+                            href="/assets/QRSOMOSSST.png"
+                            download="QR_Nequi_SomosSST.png"
                             className="mt-6 w-full flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold text-green-700 bg-green-100 hover:bg-green-200 transition-colors"
                         >
                             <Download className="w-4 h-4" />

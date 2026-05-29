@@ -122,7 +122,7 @@ export default function WelcomePromoPopup() {
               </div>
 
               <h2 className="text-2xl md:text-3xl font-black text-text-primary mb-2 tracking-tight">
-                ¡Bienvenido a <span className="text-green-600">WAPPY</span>!
+                ¡Bienvenido a <span className="text-green-600">SomosSST</span>!
               </h2>
               <p className="text-text-secondary text-base md:text-lg mb-5 md:mb-8 max-w-sm">
                 Queremos celebrar tu llegada con un descuento exclusivo en cualquiera de nuestros planes.

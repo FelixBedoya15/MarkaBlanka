@@ -160,7 +160,7 @@ const LiveEditor = forwardRef<LiveEditorHandle, LiveEditorProps>(
     }, []);
 
     useEffect(() => {
-      const namedSigsStr = localStorage.getItem('wappy_signatures');
+      const namedSigsStr = localStorage.getItem('somossst_signatures');
       let initialNamed: Record<string, string> = {};
       if (namedSigsStr) {
         try {
@@ -190,7 +190,7 @@ const LiveEditor = forwardRef<LiveEditorHandle, LiveEditorProps>(
             if (data.signatures && Object.keys(data.signatures).length > 0) {
               setNamedSignatures((prev) => {
                 const merged = { ...prev, ...data.signatures };
-                localStorage.setItem('wappy_signatures', JSON.stringify(merged));
+                localStorage.setItem('somossst_signatures', JSON.stringify(merged));
                 return merged;
               });
             }
@@ -392,7 +392,7 @@ const LiveEditor = forwardRef<LiveEditorHandle, LiveEditorProps>(
     useEffect(() => {
       try {
         if (Object.keys(namedSignatures).length > 0) {
-          localStorage.setItem('wappy_signatures', JSON.stringify(namedSignatures));
+          localStorage.setItem('somossst_signatures', JSON.stringify(namedSignatures));
         }
       } catch (e) {
         console.warn('Storage quota exceeded for signatures.');
@@ -439,7 +439,7 @@ const LiveEditor = forwardRef<LiveEditorHandle, LiveEditorProps>(
             if (name && matchedSignatureUrl) {
               const img = document.createElement('img');
               img.src = matchedSignatureUrl;
-              img.className = 'wappy-auto-signature';
+              img.className = 'somossst-auto-signature';
               img.style.maxHeight = '100px';
               img.style.display = 'block';
               img.style.margin = '10px auto';
@@ -615,7 +615,7 @@ const LiveEditor = forwardRef<LiveEditorHandle, LiveEditorProps>(
 
           const updated = { ...namedSignatures, [nameToUse]: signatureUrl };
           setNamedSignatures(updated);
-          localStorage.setItem('wappy_signatures', JSON.stringify(updated));
+          localStorage.setItem('somossst_signatures', JSON.stringify(updated));
           persistSignaturesToBackend(updated);
 
           // Insert into placeholder or at cursor
@@ -674,7 +674,7 @@ const LiveEditor = forwardRef<LiveEditorHandle, LiveEditorProps>(
 
       const updated = { ...namedSignatures, [nameToUse]: base64 };
       setNamedSignatures(updated);
-      localStorage.setItem('wappy_signatures', JSON.stringify(updated));
+      localStorage.setItem('somossst_signatures', JSON.stringify(updated));
       persistSignaturesToBackend(updated);
 
       // Immediately insert into the placeholder or at cursor
@@ -701,7 +701,7 @@ const LiveEditor = forwardRef<LiveEditorHandle, LiveEditorProps>(
       setNamedSignatures((prev) => {
         const next = { ...prev };
         delete next[name];
-        localStorage.setItem('wappy_signatures', JSON.stringify(next));
+        localStorage.setItem('somossst_signatures', JSON.stringify(next));
         persistSignaturesToBackend(next);
         return next;
       });
