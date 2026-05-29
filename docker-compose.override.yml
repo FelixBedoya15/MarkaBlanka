@@ -57,7 +57,6 @@ services:
   # === 3. SERVICIO DE OLLAMA (IA Local) ===
   ollama:
     image: ollama/ollama:latest
-    container_name: ollama
     restart: always
     volumes:
       - ollama_data:/root/.ollama
@@ -67,7 +66,6 @@ services:
   # === 4. AUTO-PULL MODELS (Descarga automática de modelos) ===
   pull-models:
     image: curlimages/curl:latest
-    container_name: ollama-pull-models
     networks:
       - dokploy-network
     depends_on:
