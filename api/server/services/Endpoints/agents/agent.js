@@ -1,0 +1,254 @@
+const { Providers } = require('@librechat/agents');
+const {
+  primeResources,
+  getModelMaxTokens,
+  extractLibreChatParams,
+  optionalChainWithEmptyCheck,
+} = require('@librechat/api');
+const {
+  ErrorTypes,
+  EModelEndpoint,
+  EToolResources,
+  isAgentsEndpoint,
+  replaceSpecialVars,
+  providerEndpointMap,
+} = require('librechat-data-provider');
+const generateArtifactsPrompt = require('~/app/clients/prompts/artifacts');
+const { getProviderConfig } = require('~/server/services/Endpoints');
+const { processFiles } = require('~/server/services/Files/process');
+const { getFiles, getToolFilesByIds } = require('~/models/File');
+const { getConvoFiles } = require('~/models/Conversation');
+
+/**
+ * @param {object} params
+ * @param {ServerRequest} params.req
+ * @param {ServerResponse} params.res
+ * @param {Agent} params.agent
+ * @param {string | null} [params.conversationId]
+ * @param {Array<IMongoFile>} [params.requestFiles]
+ * @param {typeof import('~/server/services/ToolService').loadAgentTools | undefined} [params.loadTools]
+ * @param {TEndpointOption} [params.endpointOption]
+ * @param {Set<string>} [params.allowedProviders]
+ * @param {boolean} [params.isInitialAgent]
+ * @returns {Promise<Agent & {
+ * tools: StructuredTool[],
+ * attachments: Array<MongoFile>,
+ * toolContextMap: Record<string, unknown>,
+ * maxContextTokens: number,
+ * userMCPAuthMap?: Record<string, Record<string, string>>
+ * }>}
+ */
+const initializeAgent = async ({
+  req,
+  res,
+  agent,
+  loadTools,
+  requestFiles,
+  conversationId,
+  endpointOption,
+  allowedProviders,
+  isInitialAgent = false,
+}) => {
+  const appConfig = req.config;
+  if (
+    isAgentsEndpoint(endpointOption?.endpoint) &&
+    allowedProviders.size > 0 &&
+    !allowedProviders.has(agent.provider)
+  ) {
+    throw new Error(
+      `{ "type": "${ErrorTypes.INVALID_AGENT_PROVIDER}", "info": "${agent.provider}" }`,
+    );
+  }
+  let currentFiles;
+
+  const _modelOptions = structuredClone(
+    Object.assign(
+      { model: agent.model },
+      agent.model_parameters ?? { model: agent.model },
+      isInitialAgent === true ? endpointOption?.model_parameters : {},
+    ),
+  );
+
+  const { resendFiles, maxContextTokens, modelOptions } = extractLibreChatParams(_modelOptions);
+
+  if (isInitialAgent && conversationId != null && resendFiles) {
+    const fileIds = (await getConvoFiles(conversationId)) ?? [];
+    /** @type {Set<EToolResources>} */
+    const toolResourceSet = new Set();
+    for (const tool of agent.tools) {
+      if (EToolResources[tool]) {
+        toolResourceSet.add(EToolResources[tool]);
+      }
+    }
+    const toolFiles = await getToolFilesByIds(fileIds, toolResourceSet);
+    if (requestFiles.length || toolFiles.length) {
+      currentFiles = await processFiles(requestFiles.concat(toolFiles));
+    }
+  } else if (isInitialAgent && requestFiles.length) {
+    currentFiles = await processFiles(requestFiles);
+  }
+
+  const { attachments, tool_resources } = await primeResources({
+    req,
+    getFiles,
+    appConfig,
+    agentId: agent.id,
+    attachments: currentFiles,
+    tool_resources: agent.tool_resources,
+    requestFileSet: new Set(requestFiles?.map((file) => file.file_id)),
+  });
+
+  const provider = agent.provider;
+  const {
+    tools: structuredTools,
+    toolContextMap,
+    userMCPAuthMap,
+  } = (await loadTools?.({
+    req,
+    res,
+    provider,
+    agentId: agent.id,
+    tools: agent.tools,
+    model: agent.model,
+    tool_resources,
+  })) ?? {};
+
+  agent.endpoint = provider;
+  const { getOptions, overrideProvider } = getProviderConfig({ provider, appConfig });
+  if (overrideProvider !== agent.provider) {
+    agent.provider = overrideProvider;
+  }
+
+  const _endpointOption =
+    isInitialAgent === true
+      ? Object.assign({}, endpointOption, { model_parameters: modelOptions })
+      : { model_parameters: modelOptions };
+
+  const options = await getOptions({
+    req,
+    res,
+    optionsOnly: true,
+    overrideEndpoint: provider,
+    overrideModel: agent.model,
+    endpointOption: _endpointOption,
+  });
+
+  const tokensModel =
+    agent.provider === EModelEndpoint.azureOpenAI ? agent.model : options.llmConfig?.model;
+  const maxOutputTokens = optionalChainWithEmptyCheck(
+    options.llmConfig?.maxOutputTokens,
+    options.llmConfig?.maxTokens,
+    0,
+  );
+  const agentMaxContextTokens = optionalChainWithEmptyCheck(
+    maxContextTokens,
+    getModelMaxTokens(tokensModel, providerEndpointMap[provider], options.endpointTokenConfig),
+    18000,
+  );
+
+  if (
+    agent.endpoint === EModelEndpoint.azureOpenAI &&
+    options.llmConfig?.azureOpenAIApiInstanceName == null
+  ) {
+    agent.provider = Providers.OPENAI;
+  }
+
+  if (options.provider != null) {
+    agent.provider = options.provider;
+  }
+
+  /** @type {import('@librechat/agents').GenericTool[]} */
+  let tools = options.tools?.length ? options.tools : structuredTools;
+  if (
+    (agent.provider === Providers.GOOGLE || agent.provider === Providers.VERTEXAI) &&
+    options.tools?.length &&
+    structuredTools?.length
+  ) {
+    throw new Error(`{ "type": "${ErrorTypes.GOOGLE_TOOL_CONFLICT}"}`);
+  } else if (
+    (agent.provider === Providers.OPENAI ||
+      agent.provider === Providers.AZURE ||
+      agent.provider === Providers.ANTHROPIC) &&
+    options.tools?.length &&
+    structuredTools?.length
+  ) {
+    tools = structuredTools.concat(options.tools);
+  }
+
+  /** @type {import('@librechat/agents').ClientOptions} */
+  agent.model_parameters = { ...options.llmConfig };
+  if (options.configOptions) {
+    agent.model_parameters.configuration = options.configOptions;
+  }
+
+  if (agent.instructions && agent.instructions !== '') {
+    agent.instructions = replaceSpecialVars({
+      text: agent.instructions,
+      user: req.user,
+    });
+  }
+
+  if (typeof agent.artifacts === 'string' && agent.artifacts !== '') {
+    agent.additional_instructions = generateArtifactsPrompt({
+      endpoint: agent.provider,
+      artifacts: agent.artifacts,
+    });
+  }
+
+  // Inject Global Canvas Prompt Guidelines if canvas tool is configured
+  const hasCanvasTool = Array.isArray(agent.tools) && agent.tools.includes('canvas');
+  if (hasCanvasTool) {
+    let canvasStatusPrompt = '';
+    if (conversationId && conversationId !== 'new') {
+      try {
+        const CanvasSession = require('~/models/CanvasSession');
+        const session = await CanvasSession.findOne({ conversationId });
+        if (session) {
+          canvasStatusPrompt = `
+# ESTADO ACTUAL DEL CANVAS (LIENZO):
+- ¡ATENCIÓN! Ya existe un documento activo cargado en el Canvas del usuario:
+  * Título actual: "${session.title}"
+  * Tipo de archivo: "${session.fileType}"
+  * Longitud del contenido: ${session.content ? session.content.length : 0} caracteres.
+- **DIRECTRICES DE TRABAJO OBLIGATORIAS**:
+  * Si el usuario te pide continuar, rellenar, modificar, auditar o completar este documento preexistente, **NO DEBES crear un nuevo documento ni sobrescribir el actual** con la acción \`crear\` o \`actualizar\`.
+  * En su lugar, usa primero la acción \`leer\` para inspeccionar el contenido completo y luego aplica cambios específicos y enfocados usando exclusivamente las acciones granulares \`buscar_reemplazar\`, \`editar_seccion\` o \`insertar\`. Esto garantiza que no se borre el diseño premium ni la estructura legal de la plantilla preestablecida.
+`;
+        } else {
+          canvasStatusPrompt = `
+# ESTADO ACTUAL DEL CANVAS (LIENZO):
+- El Canvas está actualmente vacío para esta conversación. Si necesitas producir un informe, política, contrato u otro documento, puedes inicializarlo usando la acción \`crear\` de la herramienta \`canvas\`.
+`;
+        }
+      } catch (err) {
+        if (req.log) {
+          req.log.error('[Canvas Ingestion Error]', err);
+        } else {
+          console.error('[Canvas Ingestion Error]', err);
+        }
+      }
+    }
+
+    const canvasPrompt = `
+# REGLAS CRÍTICAS DE USO DE CANVAS:
+1. **SIEMPRE LEER ANTES DE EDITAR**: Si vas a modificar un Canvas que ya tiene contenido o que fue cargado desde una plantilla predefinida (por ejemplo, un "Procedimiento Sancionatorio"), primero DEBES usar la acción \`leer\` para inspeccionar el contenido completo actual del Canvas.
+2. **EDICIONES GRANULARES Y PRESERVACIÓN**: Queda estrictamente prohibido usar \`actualizar\` o \`crear\` para reemplazar un documento existente con un bloque pequeño o incompleto. Para realizar cambios o personalizaciones (por ejemplo, rellenar datos de la empresa, agregar cláusulas o nombres), DEBES usar exclusivamente acciones precisas y granulares como \`buscar_reemplazar\`, \`editar_seccion\` o \`insertar\`. Debes mantener intacto el diseño, las cabeceras, pies de página, estilos y la estructura del documento.
+3. **RESPUESTAS CONVERSACIONALES Y LIMPIEZA EN EL CHAT**: No imprimas bloques de código HTML, CSS, tablas extensas, marcas JSON o código Markdown del documento en la ventana de chat. Toda la edición debe realizarse silenciosamente llamando a la herramienta \`canvas\`. En tu mensaje de chat, describe de manera breve, limpia y conversacional los cambios específicos que realizaste en el Canvas, sin saturar la conversación con el código fuente del documento.
+`;
+    agent.additional_instructions = (agent.additional_instructions ?? '') + '\n' + canvasStatusPrompt + '\n' + canvasPrompt;
+  }
+
+  return {
+    ...agent,
+    tools,
+    attachments,
+    resendFiles,
+    userMCPAuthMap,
+    toolContextMap,
+    additional_instructions: agent.additional_instructions,
+    useLegacyContent: !!options.useLegacyContent,
+    maxContextTokens: Math.round((agentMaxContextTokens - maxOutputTokens) * 0.9),
+  };
+};
+
+module.exports = { initializeAgent };

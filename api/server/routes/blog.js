@@ -1,0 +1,26 @@
+const express = require('express');
+const { requireJwtAuth, checkJwtAuth } = require('../middleware');
+const {
+    getBlogPosts,
+    getBlogPostById,
+    createBlogPost,
+    updateBlogPost,
+    deleteBlogPost,
+    generateBlogPost,
+    setFeaturedPost
+} = require('../controllers/BlogController');
+
+const router = express.Router();
+
+// Public routes (or authenticated only, up to user)
+router.get('/', checkJwtAuth, getBlogPosts);
+router.get('/:id', getBlogPostById);
+
+// Admin / Write routes
+router.post('/admin/generate', requireJwtAuth, generateBlogPost);
+router.post('/create', requireJwtAuth, createBlogPost);
+router.put('/:id', requireJwtAuth, updateBlogPost);
+router.delete('/:id', requireJwtAuth, deleteBlogPost);
+router.put('/admin/:id/featured', requireJwtAuth, setFeaturedPost);
+
+module.exports = router;

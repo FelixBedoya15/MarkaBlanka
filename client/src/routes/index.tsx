@@ -1,0 +1,340 @@
+import SGSSTDashboard from '~/components/SGSST/Dashboard';
+import SGSST2Dashboard from '~/components/SGSST2/Dashboard';
+import PublicReportView from '~/components/SGSST/PublicReportView';
+import PublicReporteActos from '~/components/SGSST/PublicReporteActos';
+import PublicParticipacionIPEVAR from '~/components/SGSST/PublicParticipacionIPEVAR';
+import PublicAltaDireccion from '~/components/SGSST/PublicAltaDireccion';
+import PublicAtelTestimonio from '~/components/SGSST/PublicAtelTestimonio';
+import PublicPerfilUpdate from '~/components/SGSST/PublicPerfilUpdate';
+import PrivacyPolicyPage from '~/components/Auth/PrivacyPolicyPage';
+import TermsOfServicePage from '~/components/Auth/TermsOfServicePage';
+import WappyAboutPage from '~/components/Auth/WappyAboutPage';
+import ComunidadPage from '~/components/Marketing/ComunidadPage';
+import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom';
+import {
+  Login,
+  VerifyEmail,
+  Registration,
+  ResetPassword,
+  ApiErrorWatcher,
+  TwoFactorScreen,
+  RequestPasswordReset,
+} from '~/components/Auth';
+import { MarketplaceProvider } from '~/components/Agents/MarketplaceContext';
+import AgentMarketplace from '~/components/Agents/Marketplace';
+import { OAuthSuccess, OAuthError } from '~/components/OAuth';
+import { AuthContextProvider } from '~/hooks/AuthContext';
+import RouteErrorBoundary from './RouteErrorBoundary';
+import StartupLayout from './Layouts/Startup';
+import LoginLayout from './Layouts/Login';
+import dashboardRoutes from './Dashboard';
+import ShareRoute from './ShareRoute';
+import ChatRoute from './ChatRoute';
+import LivePage from '~/components/Liva/LivePage';
+import TrainingDashboard from '~/components/Training/TrainingDashboard';
+import CourseViewer from '~/components/Training/CourseViewer';
+import TrainingAdminDashboard from '~/components/Training/TrainingAdminDashboard';
+import CourseEditor from '~/components/Training/CourseEditor';
+import BlogDashboard from '~/components/Blog/BlogDashboard';
+import BlogAdminDashboard from '~/components/Blog/BlogAdminDashboard';
+import BlogPostEditor from '~/components/Blog/BlogPostEditor';
+import BlogPostViewer from '~/components/Blog/BlogPostViewer';
+import TenshiAdminPanel from '~/components/Tenshi/TenshiAdminPanel';
+import EditorArchivosDashboard from '~/components/EditorArchivos/EditorArchivosDashboard';
+import AuditoriaDashboard from '~/components/Auditoria/AuditoriaDashboard';
+import InspeccionDashboard from '~/components/InspeccionMinTrabajo/InspeccionDashboard';
+import DocumentEditorView from '~/components/EditorArchivos/DocumentEditorView';
+import PlansPage from '~/components/Plans/PlansPage';
+import ContactPage from '~/components/Plans/ContactPage';
+import RoadmapPage from '~/components/Roadmap/RoadmapPage';
+import Search from './Search';
+import Root from './Root';
+import RoadmapNotifier from '~/components/Roadmap/RoadmapNotifier';
+
+const AuthLayout = () => (
+  <AuthContextProvider>
+    <Outlet />
+    <ApiErrorWatcher />
+    <RoadmapNotifier />
+  </AuthContextProvider>
+);
+
+const baseEl = document.querySelector('base');
+const baseHref = baseEl?.getAttribute('href') || '/';
+
+export const router = createBrowserRouter(
+  [
+    {
+      path: 'share/:shareId',
+      element: <ShareRoute />,
+      errorElement: <RouteErrorBoundary />,
+    },
+    {
+      path: 'report/:id',
+      element: <PublicReportView />,
+      errorElement: <RouteErrorBoundary />,
+    },
+    {
+      path: 'sgsst-public/reportar/:companyId',
+      element: <PublicReporteActos />,
+      errorElement: <RouteErrorBoundary />,
+    },
+    {
+      path: 'sgsst-public/ipevar/:companyId',
+      element: <PublicParticipacionIPEVAR />,
+      errorElement: <RouteErrorBoundary />,
+    },
+    {
+      path: 'sgsst-public/alta-direccion/:companyId',
+      element: <PublicAltaDireccion />,
+      errorElement: <RouteErrorBoundary />,
+    },
+    {
+      path: 'sgsst-public/atel-testimonio/:companyId',
+      element: <PublicAtelTestimonio />,
+      errorElement: <RouteErrorBoundary />,
+    },
+    {
+      path: 'sgsst-public/perfil-update/:companyId/:workerId?',
+      element: <PublicPerfilUpdate />,
+      errorElement: <RouteErrorBoundary />,
+    },
+    {
+      // Catch-all for UUIDs at the root (solves the 404 without prefix)
+      path: ':id',
+      element: <PublicReportView />,
+      errorElement: <RouteErrorBoundary />,
+    },
+    {
+      path: 'oauth',
+      errorElement: <RouteErrorBoundary />,
+      children: [
+        {
+          path: 'success',
+          element: <OAuthSuccess />,
+        },
+        {
+          path: 'error',
+          element: <OAuthError />,
+        },
+      ],
+    },
+    {
+      path: '/',
+      element: <StartupLayout />,
+      errorElement: <RouteErrorBoundary />,
+      children: [
+        {
+          path: 'register',
+          element: <Registration />,
+        },
+        {
+          path: 'forgot-password',
+          element: <RequestPasswordReset />,
+        },
+        {
+          path: 'reset-password',
+          element: <ResetPassword />,
+        },
+      ],
+    },
+    {
+      path: 'privacy',
+      element: <PrivacyPolicyPage />,
+      errorElement: <RouteErrorBoundary />,
+    },
+    {
+      path: 'terms',
+      element: <TermsOfServicePage />,
+      errorElement: <RouteErrorBoundary />,
+    },
+    {
+      path: 'about',
+      element: <WappyAboutPage />,
+      errorElement: <RouteErrorBoundary />,
+    },
+    {
+      path: 'comunidad',
+      element: (
+        <AuthContextProvider>
+          <ComunidadPage />
+          <ApiErrorWatcher />
+        </AuthContextProvider>
+      ),
+      errorElement: <RouteErrorBoundary />,
+    },
+    {
+      path: 'planes',
+      element: (
+        <AuthContextProvider>
+          <PlansPage />
+          <ApiErrorWatcher />
+        </AuthContextProvider>
+      ),
+      errorElement: <RouteErrorBoundary />,
+    },
+    {
+      path: 'hoja-de-ruta',
+      element: (
+        <AuthContextProvider>
+          <RoadmapPage />
+          <ApiErrorWatcher />
+          <RoadmapNotifier />
+        </AuthContextProvider>
+      ),
+      errorElement: <RouteErrorBoundary />,
+    },
+    {
+      path: 'contactanos',
+      element: (
+        <AuthContextProvider>
+          <ContactPage />
+          <ApiErrorWatcher />
+          <RoadmapNotifier />
+        </AuthContextProvider>
+      ),
+      errorElement: <RouteErrorBoundary />,
+    },
+    {
+      path: 'blog/:postId/:slug?',
+      element: (
+        <AuthContextProvider>
+          <BlogPostViewer />
+          <ApiErrorWatcher />
+        </AuthContextProvider>
+      ),
+      errorElement: <RouteErrorBoundary />,
+    },
+    {
+      path: 'verify',
+      element: <VerifyEmail />,
+      errorElement: <RouteErrorBoundary />,
+    },
+    {
+      element: <AuthLayout />,
+      errorElement: <RouteErrorBoundary />,
+      children: [
+        {
+          path: '/',
+          element: <LoginLayout />,
+          children: [
+            {
+              path: 'login',
+              element: <Login />,
+            },
+            {
+              path: 'login/2fa',
+              element: <TwoFactorScreen />,
+            },
+          ],
+        },
+        dashboardRoutes,
+        {
+          path: '/',
+          element: <Root />,
+          children: [
+            {
+              index: true,
+              element: <Navigate to="/c/new" replace={true} />,
+            },
+            {
+              path: 'c/:conversationId?',
+              element: <ChatRoute />,
+            },
+            {
+              path: 'live',
+              element: <LivePage />,
+            },
+            {
+              path: 'search',
+              element: <Search />,
+            },
+            {
+              path: 'sgsst',
+              element: <SGSSTDashboard />,
+            },
+            {
+              path: 'sgsst2',
+              element: <SGSST2Dashboard />,
+            },
+            {
+              /* Redirect old GTC-45 workspace URLs to the equivalent native chat */
+              path: 'sgsst/agente-gtc45/:conversationId',
+              element: <Navigate to="/c/new" replace={true} />,
+            },
+            {
+              path: 'sgsst/agente-gtc45',
+              element: <Navigate to="/c/new" replace={true} />,
+            },
+
+            {
+              path: 'training',
+              element: <TrainingDashboard />,
+            },
+            {
+              path: 'training/admin',
+              element: <TrainingAdminDashboard />,
+            },
+            {
+              path: 'training/admin/courses/:id',
+              element: <CourseEditor />,
+            },
+            {
+              path: 'training/:courseId/:slug?',
+              element: <CourseViewer />,
+            },
+            {
+              path: 'blog',
+              element: <BlogDashboard />,
+            },
+            {
+              path: 'blog/admin',
+              element: <BlogAdminDashboard />,
+            },
+            {
+              path: 'tenshi/admin',
+              element: <TenshiAdminPanel />,
+            },
+            {
+              path: 'blog/admin/posts/:id',
+              element: <BlogPostEditor />,
+            },
+            {
+              path: 'editor-archivos',
+              element: <EditorArchivosDashboard />,
+            },
+            {
+              path: 'auditoria',
+              element: <AuditoriaDashboard />,
+            },
+            {
+              path: 'inspeccion',
+              element: <InspeccionDashboard />,
+            },
+            {
+              path: 'editor-archivos/:id',
+              element: <DocumentEditorView />,
+            },
+            {
+              path: 'agents',
+              element: (
+                <MarketplaceProvider>
+                  <AgentMarketplace />
+                </MarketplaceProvider>
+              ),
+            },
+            {
+              path: 'agents/:category',
+              element: (
+                <MarketplaceProvider>
+                  <AgentMarketplace />
+                </MarketplaceProvider>
+              ),
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  { basename: baseHref },
+);

@@ -1,0 +1,25 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/Users/venta/Documents/GitHub/LibreChat-WAPPY/api/logs/.e5dd9c79ce7fe9440db5665576d7a46c1005008d-audit.json",
+    "files": [
+        {
+            "date": 1778955184802,
+            "name": "/Users/venta/Documents/GitHub/LibreChat-WAPPY/api/logs/meiliSync-2026-05-16.log",
+            "hash": "4727cd718eb524206b41dcfd366060c57daa11da9f3cfeae84f03994aa23a79b"
+        },
+        {
+            "date": 1779270453964,
+            "name": "/Users/venta/Documents/GitHub/LibreChat-WAPPY/api/logs/meiliSync-2026-05-20.log",
+            "hash": "52ee1d5c45835589f46e05c73be96495eb70920cdfccda45eebd5891a88d6295"
+        },
+        {
+            "date": 1779455848734,
+            "name": "/Users/venta/Documents/GitHub/LibreChat-WAPPY/api/logs/meiliSync-2026-05-22.log",
+            "hash": "0423509aff483a85551e2674562634492956e39ed31d4e7d147da1e892a63c55"
+        }
+    ],
+    "hashType": "sha256"
+}

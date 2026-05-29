@@ -1,0 +1,86 @@
+import React from 'react';
+import { object, string } from 'zod';
+import { Label } from '@librechat/client';
+import { AuthKeys } from 'librechat-data-provider';
+import type { TConfigProps } from '~/common';
+import FileUpload from '~/components/Chat/Input/Files/FileUpload';
+import { useLocalize, useMultipleKeys, useAuthContext } from '~/hooks';
+import InputWithLabel from './InputWithLabel';
+
+const CredentialsSchema = object({
+  client_email: string().email().min(3),
+  project_id: string().min(3),
+  private_key: string().min(601),
+});
+
+const validateCredentials = (credentials: Record<string, unknown>) => {
+  const result = CredentialsSchema.safeParse(credentials);
+  return result.success;
+};
+
+const GoogleConfig = ({ userKey, setUserKey }: Pick<TConfigProps, 'userKey' | 'setUserKey'>) => {
+  const localize = useLocalize();
+  const { getMultiKey, setMultiKey } = useMultipleKeys(setUserKey);
+  const { user } = useAuthContext();
+
+  const keyLimit = React.useMemo(() => {
+    if (!user) return 1;
+    switch (user.role) {
+      case 'USER': return 1;
+      case 'USER_GO': return 4;
+      case 'USER_PLUS': return 10;
+      case 'USER_PRO': return 10;
+      case 'ADMIN': return 10;
+      default: return 1;
+    }
+  }, [user]);
+
+  return (
+    <>
+      <div className="flex flex-row">
+        <Label htmlFor={AuthKeys.GOOGLE_SERVICE_KEY} className="text-left text-sm font-medium">
+          {localize('com_endpoint_config_google_service_key')}
+        </Label>
+        <Label className="mx-1 text-right text-sm text-text-secondary">
+          {localize('com_endpoint_config_google_cloud_platform')}
+        </Label>
+        <br />
+      </div>
+      <FileUpload
+        id={AuthKeys.GOOGLE_SERVICE_KEY}
+        className="w-full"
+        containerClassName="dark:bg-gray-700 h-10 max-h-10 w-full resize-none py-2 dark:ring-1 dark:ring-gray-600"
+        text={localize('com_endpoint_config_key_import_json_key')}
+        successText={localize('com_endpoint_config_key_import_json_key_success')}
+        invalidText={localize('com_endpoint_config_key_import_json_key_invalid')}
+        validator={validateCredentials}
+        onFileSelected={(data) => {
+          setMultiKey(AuthKeys.GOOGLE_SERVICE_KEY, JSON.stringify(data), userKey);
+        }}
+      />
+      {Array.from({ length: keyLimit }).map((_, index) => {
+        const currentKeys = (getMultiKey(AuthKeys.GOOGLE_API_KEY, userKey) ?? '').split(',');
+        // Ensure we always have elements up to the keyLimit securely, filling with empty strings if needed
+        while (currentKeys.length < keyLimit) currentKeys.push('');
+
+        return (
+          <InputWithLabel
+            key={index}
+            id={`${AuthKeys.GOOGLE_API_KEY}-${index}`}
+            value={currentKeys[index]?.trim() ?? ''}
+            onChange={(e: { target: { value: string } }) => {
+              const newKeys = [...currentKeys];
+              newKeys[index] = e.target.value;
+              // Join all keys with comma, even empty ones, to preserve position
+              setMultiKey(AuthKeys.GOOGLE_API_KEY, newKeys.join(','), userKey);
+            }}
+            label={`${localize('com_endpoint_config_google_api_key')} ${index + 1}`}
+            subLabel={index === 0 ? localize('com_endpoint_config_google_gemini_api') : ''}
+          />
+        );
+      })}
+    </>
+  );
+};
+
+export default GoogleConfig;

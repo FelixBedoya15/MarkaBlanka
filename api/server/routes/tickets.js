@@ -1,0 +1,330 @@
+const express = require('express');
+const router = express.Router();
+const Ticket = require('../../models/Ticket');
+const Notification = require('../../models/Notification');
+const { AuthKeys } = require('librechat-data-provider');
+const { requireJwtAuth } = require('../middleware');
+const { logger } = require('~/config');
+const axios = require('axios');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { syncToRag } = require('../services/RagService');
+const { getUserKey } = require('~/server/services/UserService');
+const TenshiConfig = require('../../models/TenshiConfig');
+const { generateShortLivedToken } = require('@librechat/api');
+
+// Helper: Create notifications for all admins
+async function notifyAllAdmins({ title, body, ticketId }) {
+    try {
+        const mongoose = require('mongoose');
+        const User = mongoose.model('User');
+        const admins = await User.find({ role: 'ADMIN' }).select('_id').lean();
+        const notificationDocs = admins.map(a => ({
+            user: a._id,
+            type: 'ticket_created',
+            title,
+            body,
+            ticketId,
+        }));
+        if (notificationDocs.length > 0) {
+            await Notification.insertMany(notificationDocs);
+        }
+    } catch (e) {
+        logger.warn('[Tickets] Error sending admin notifications:', e.message);
+    }
+}
+
+// User: Create a ticket
+router.post('/', requireJwtAuth, async (req, res) => {
+    try {
+        const { name, email, phone, type, description } = req.body;
+        const ticket = new Ticket({
+            user: req.user.id,
+            name,
+            email,
+            phone,
+            type,
+            description,
+        });
+        await ticket.save();
+
+        // Notify all admins about the new ticket
+        notifyAllAdmins({
+            title: `Nuevo ticket PQRS: ${type}`,
+            body: `${name} ha enviado un ticket de tipo "${type}": ${description.substring(0, 120)}...`,
+            ticketId: ticket._id,
+        });
+
+        res.status(201).json(ticket);
+    } catch (error) {
+        logger.error('[Tickets] Error creating ticket:', error);
+        res.status(500).json({ error: 'Failed to create ticket' });
+    }
+});
+
+// User: Get their tickets
+router.get('/my', requireJwtAuth, async (req, res) => {
+    try {
+        const tickets = await Ticket.find({ user: req.user.id }).sort({ createdAt: -1 });
+        res.json(tickets);
+    } catch (error) {
+        logger.error('[Tickets] Error fetching user tickets:', error);
+        res.status(500).json({ error: 'Failed to fetch tickets' });
+    }
+});
+
+// Admin: Get all tickets
+router.get('/all', requireJwtAuth, async (req, res) => {
+    try {
+        if (req.user.role !== 'ADMIN') {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
+        const tickets = await Ticket.find().populate('user', 'name email').sort({ createdAt: -1 });
+        res.json(tickets);
+    } catch (error) {
+        logger.error('[Tickets] Error fetching all tickets:', error);
+        res.status(500).json({ error: 'Failed to fetch tickets' });
+    }
+});
+
+// Admin: Respond to a ticket
+router.post('/:id/respond', requireJwtAuth, async (req, res) => {
+    try {
+        if (req.user.role !== 'ADMIN') {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
+        const { response, status } = req.body;
+        const ticket = await Ticket.findById(req.params.id);
+        if (!ticket) {
+            return res.status(404).json({ error: 'Ticket not found' });
+        }
+        ticket.response = response;
+        ticket.status = status || 'resolved';
+        ticket.adminResponseBy = req.user.id;
+        await ticket.save();
+
+        // Notify the ticket owner that their ticket was responded to
+        try {
+            await Notification.create({
+                user: ticket.user,
+                type: 'ticket_responded',
+                title: '¡Tu ticket PQRS fue respondido!',
+                body: `Tu solicitud de tipo "${ticket.type}" recibió una respuesta del equipo de soporte.`,
+                ticketId: ticket._id,
+            });
+        } catch (notifError) {
+            logger.warn('[Tickets] Error creating user notification:', notifError.message);
+        }
+
+        // Dynamic Knowledge: Sync with RAG system if resolved
+        if (ticket.status === 'resolved') {
+            syncToRag({
+                req,
+                type: 'ticket',
+                id: ticket._id,
+                content: `PQRS [${ticket.type}]\nUSUARIO: ${ticket.name}\nDESCRIPCIÓN: ${ticket.description}\nSOLUCIÓN: ${ticket.response}`,
+                title: `PQRS Resuelto: ${ticket.author?.name || ticket.name}`
+            });
+        }
+
+        res.json(ticket);
+    } catch (error) {
+        logger.error('[Tickets] Error responding to ticket:', error);
+        res.status(500).json({ error: 'Failed to respond to ticket' });
+    }
+});
+
+// Admin: Delete a ticket (Optional but good for cleanup)
+router.delete('/:id', requireJwtAuth, async (req, res) => {
+    try {
+        if (req.user.role !== 'ADMIN') {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
+        await Ticket.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Ticket deleted' });
+    } catch (error) {
+        res.status(500).json({ error: 'Error deleting ticket' });
+    }
+});
+
+// Admin: AI Suggest Response
+router.post('/:id/ai-suggest', requireJwtAuth, async (req, res) => {
+    try {
+        if (req.user.role !== 'ADMIN') {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
+        const ticket = await Ticket.findById(req.params.id);
+        if (!ticket) {
+            return res.status(404).json({ error: 'Ticket not found' });
+        }
+
+        const { modelName } = req.body;
+
+        // AI Logic - Support comma-separated key rotation
+        let rawKey;
+        try {
+            const storedKey = await getUserKey({ userId: req.user.id, name: 'google' });
+            try {
+                const parsed = JSON.parse(storedKey);
+                rawKey = parsed[AuthKeys.GOOGLE_API_KEY] || parsed.GOOGLE_API_KEY;
+            } catch (e) {
+                rawKey = storedKey;
+            }
+        } catch (e) { }
+
+        if (!rawKey) {
+            rawKey = process.env.GOOGLE_AI_API_KEY || process.env.GOOGLE_KEY || process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+        }
+
+        if (!rawKey) {
+            return res.status(400).json({ error: 'No se ha configurado la clave API de Google.' });
+        }
+
+        const apiKeys = rawKey.split(',').map(k => k.trim()).filter(Boolean);
+
+        // Dual-axis rotation: keys first, model fallback on 503
+        const primaryModel = modelName || 'gemini-3-flash-preview';
+        const envModels = (process.env.GOOGLE_MODELS || primaryModel).split(',').map(m => m.trim()).filter(Boolean);
+        const modelFallbacks = [primaryModel, ...envModels.filter(m => m !== primaryModel)];
+
+        // ... (knowledge gathering stays unchanged)
+        // 1. DYNAMIC KNOWLEDGE - Last 5 resolved tickets
+        let recentTicketsContext = '';
+        try {
+            const lastResolved = await Ticket.find({ status: 'resolved' })
+                .sort({ updatedAt: -1 })
+                .limit(5);
+
+            if (lastResolved.length > 0) {
+                recentTicketsContext = lastResolved.map(t => `- PQRS RESUELTO [${t.type}]: ${t.description.substring(0, 100)}... -> RESPUESTA: ${t.response.substring(0, 150)}...`).join('\n');
+            }
+        } catch (e) {
+            logger.warn('[Tickets AI] Error fetching recent tickets:', e.message);
+        }
+
+        // 2. WEB SEARCH - SearXNG Integration
+        let webContext = '';
+        try {
+            const searxngUrl = process.env.SEARXNG_INSTANCE_URL || 'https://searxng.wappy-ia.com/search';
+            const searchQuery = `"${ticket.type}" ${ticket.description.substring(0, 80)} normatividad SST Colombia`;
+
+            const searchResponse = await axios.get(searxngUrl, {
+                params: { q: searchQuery, format: 'json', language: 'es' },
+                timeout: 5000
+            });
+
+            if (searchResponse.data && searchResponse.data.results && searchResponse.data.results.length > 0) {
+                const topResults = searchResponse.data.results.slice(0, 3);
+                webContext = topResults.map(r => `- ${r.title}: ${r.content}`).join('\n');
+            }
+        } catch (searchError) {
+            logger.warn(`[Tickets AI] SearXNG Web Search failed: ${searchError.message}`);
+        }
+
+        // 3. RAG KNOWLEDGE
+        let ragContext = '';
+        if (process.env.RAG_API_URL) {
+            try {
+                const jwtToken = generateShortLivedToken(req.user.id);
+                const ragRes = await axios.post(`${process.env.RAG_API_URL}/query`, {
+                    query: ticket.description,
+                    entity_id: 'tenshi_knowledge_base',
+                    k: 3
+                }, {
+                    headers: { Authorization: `Bearer ${jwtToken}`, 'Content-Type': 'application/json' },
+                    timeout: 5000
+                });
+                if (ragRes.data && ragRes.data.length > 0) {
+                    ragContext = ragRes.data.map(m => `[CONOCIMIENTO RAG] ${(m[0]?.page_content || m.text || '').substring(0, 300)}`).join('\n');
+                }
+            } catch (e) {
+                logger.debug('[Tickets AI] RAG query failed or empty');
+            }
+        }
+
+        const tenshiConfig = await TenshiConfig.findOne();
+        const systemPrompt = tenshiConfig ? tenshiConfig.systemPrompt : 'Actúa como Tenshi, el asistente IA experto de WAPPY IA.';
+
+        let manualContent = '';
+        try {
+            const fs = require('fs');
+            const path = require('path');
+            const manualPath = path.resolve(__dirname, '../../../client/public/manual_usuario.md');
+            if (fs.existsSync(manualPath)) {
+                manualContent = fs.readFileSync(manualPath, 'utf8');
+            }
+        } catch (e) { }
+
+        const prompt = `${systemPrompt}
+
+Eres un experto en soporte al cliente para la plataforma WAPPY IA (gestión de SG-SST).
+Se ha recibido un ticket de tipo "${ticket.type}" de el usuario "${ticket.name}".
+
+MANUAL DE LA PLATAFORMA:
+${manualContent || 'No hay manual disponible.'}
+
+DESCRIPCIÓN DE LA SOLICITUD:
+"${ticket.description}"
+
+CONOCIMIENTO DINÁMICO (ÚLTIMOS TICKETS RESUELTOS):
+${recentTicketsContext || 'No hay tickets resueltos similares recientemente.'}
+
+CONOCIMIENTO BASE (RAG):
+${ragContext || 'No se encontró información específica en los documentos.'}
+
+CONTEXTO ENCONTRADO EN INTERNET (SearXNG):
+${webContext || 'No se encontró contexto adicional en internet.'}
+
+INSTRUCCIONES:
+1. Basándote en el contexto anterior (tickets previos, RAG e internet), sugiere una respuesta profesional, amable y resolutiva.
+2. Si el caso es normativo (SST), cita la normativa correspondiente si aparece en el contexto.
+3. Responde directamente con el cuerpo del mensaje.
+4. Mantén un tono empático.
+5. NO uses exceso de markdown, mantén el texto limpio.`;
+
+        // Rotation loop: outer = models, inner = api keys
+        let suggestion = null;
+        let lastSuggestError = null;
+        let suggestSucceeded = false;
+        for (let mi = 0; mi < modelFallbacks.length && !suggestSucceeded; mi++) {
+            const currentModel = modelFallbacks[mi];
+            for (let i = 0; i < apiKeys.length; i++) {
+                try {
+                    logger.debug(`[Tickets AI] Trying Key ${i + 1}/${apiKeys.length} with model "${currentModel}"`);
+                    const genAI = new GoogleGenerativeAI(apiKeys[i]);
+                    const model = genAI.getGenerativeModel({ model: currentModel });
+                    const result = await model.generateContent(prompt);
+                    suggestion = result.response.text();
+                    lastSuggestError = null;
+                    suggestSucceeded = true;
+                    break;
+                } catch (keyError) {
+                    lastSuggestError = keyError;
+                    const status = keyError.status || keyError.statusCode;
+                    const msg = keyError.message || '';
+                    // Key rotation on 403/429
+                    if (status === 429 || status === 403 || msg.includes('leaked') || msg.includes('quota') || msg.includes('Forbidden')) {
+                        logger.warn(`[Tickets AI] Clave #${i + 1} rechazada (${status}). Rotando clave...`);
+                        continue;
+                    }
+                    // Model fallback on 503
+                    if (status === 503 || msg.includes('overloaded') || msg.includes('Service Unavailable')) {
+                        logger.warn(`[Tickets AI] Modelo "${currentModel}" no disponible (503). Cambiando modelo...`);
+                        break;
+                    }
+                    throw keyError;
+                }
+            }
+        }
+
+        if (!suggestSucceeded && lastSuggestError) {
+            throw lastSuggestError;
+        }
+
+        res.json({ suggestion });
+    } catch (error) {
+        logger.error('[Tickets AI] Error suggesting response:', error);
+        res.status(500).json({ error: 'Failed to suggest response' });
+    }
+});
+
+module.exports = router;

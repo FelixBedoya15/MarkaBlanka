@@ -1,0 +1,100 @@
+const accessPermissions = require('./accessPermissions');
+const assistants = require('./assistants');
+const categories = require('./categories');
+const tokenizer = require('./tokenizer');
+const endpoints = require('./endpoints');
+const staticRoute = require('./static');
+const messages = require('./messages');
+const memories = require('./memories');
+const presets = require('./presets');
+const prompts = require('./prompts');
+const balance = require('./balance');
+const plugins = require('./plugins');
+const actions = require('./actions');
+const banner = require('./banner');
+const search = require('./search');
+const models = require('./models');
+const convos = require('./convos');
+const config = require('./config');
+const agents = require('./agents');
+const roles = require('./roles');
+const oauth = require('./oauth');
+const files = require('./files');
+const share = require('./share');
+const tags = require('./tags');
+const auth = require('./auth');
+const edit = require('./edit');
+const keys = require('./keys');
+const user = require('./user');
+const mcp = require('./mcp');
+const admin = require('./admin');
+const voice = require('./voice');
+const ads = require('./ads');
+const sgsst = require('./sgsst');
+const training = require('./training');
+const blog = require('./blog');
+const wompi = require('./wompi');
+const tenshi = require('./tenshi');
+const tickets = require('./tickets');
+const notifications = require('./notifications');
+const contact = require('./contact');
+const publicReports = require('./publicReports');
+const publicSgsst = require('./publicSgsst');
+const liveAiEdit = require('./liveAiEdit');
+const liveDocuments = require('./liveDocuments');
+const roadmap = require('./roadmap');
+const whatsapp = require('./whatsapp');
+const referrals = require('./referrals');
+const comunidad = require('./comunidad');
+
+module.exports = {
+  auth,
+
+  keys,
+  user,
+  search,
+  edit,
+  messages,
+  convos,
+  presets,
+  prompts,
+  categories,
+  tokenizer,
+  endpoints,
+  balance,
+  models,
+  plugins,
+  config,
+  assistants,
+  files,
+  staticRoute,
+  share,
+  roles,
+  agents,
+  banner,
+  memories,
+  oauth,
+  accessPermissions,
+  tags,
+  mcp,
+  admin,
+  actions,
+  voice,
+  ads,
+  sgsst,
+  training,
+  blog,
+  wompi,
+  tenshi,
+  tickets,
+  notifications,
+  contact,
+  publicReports,
+  publicSgsst,
+  liveAiEdit,
+  liveDocuments,
+  roadmap,
+  whatsapp,
+  referrals,
+  comunidad,
+};

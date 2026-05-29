@@ -1,0 +1,77 @@
+import { useEffect, useState } from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import type { TStartupConfig } from 'librechat-data-provider';
+import { useGetStartupConfig } from '~/data-provider';
+import AuthLayout from '~/components/Auth/AuthLayout';
+import { TranslationKeys, useLocalize } from '~/hooks';
+
+const headerMap: Record<string, TranslationKeys> = {
+  '/login': 'com_auth_welcome_back',
+  '/register': 'com_auth_create_account',
+  '/forgot-password': 'com_auth_reset_password',
+  '/reset-password': 'com_auth_reset_password',
+  '/login/2fa': 'com_auth_verify_your_identity',
+};
+
+export default function StartupLayout({ isAuthenticated }: { isAuthenticated?: boolean }) {
+  const [error, setError] = useState<TranslationKeys | null>(null);
+  const [headerText, setHeaderText] = useState<TranslationKeys | null>(null);
+  const [startupConfig, setStartupConfig] = useState<TStartupConfig | null>(null);
+  const {
+    data,
+    isFetching,
+    error: startupConfigError,
+  } = useGetStartupConfig({
+    enabled: isAuthenticated ? startupConfig === null : true,
+  });
+  const localize = useLocalize();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/c/new', { replace: true });
+    }
+    if (data) {
+      setStartupConfig(data);
+    }
+  }, [isAuthenticated, navigate, data]);
+
+  useEffect(() => {
+    document.title = startupConfig?.appTitle || 'LibreChat';
+  }, [startupConfig?.appTitle]);
+
+  useEffect(() => {
+    setError(null);
+    setHeaderText(null);
+  }, [location.pathname]);
+
+  // Use `data` directly from React Query to avoid a one-render race condition:
+  // `startupConfig` local state only updates via useEffect (one cycle after isFetching
+  // becomes false). During that gap, Login.tsx sees startupConfig=null and renders
+  // nothing. Registration.tsx is unaffected because it only checks !isFetching.
+  const resolvedConfig = data ?? null;
+
+  const contextValue = {
+    error,
+    setError,
+    headerText,
+    setHeaderText,
+    startupConfigError,
+    startupConfig: resolvedConfig,
+    isFetching,
+  };
+
+  return (
+    <AuthLayout
+      header={headerText ? localize(headerText) : localize(headerMap[location.pathname])}
+      isFetching={isFetching}
+      startupConfig={resolvedConfig}
+      startupConfigError={startupConfigError}
+      pathname={location.pathname}
+      error={error}
+    >
+      <Outlet context={contextValue} />
+    </AuthLayout>
+  );
+}

@@ -1,0 +1,478 @@
+import { Plus, Copy, Download, RefreshCw } from 'lucide-react';
+import React, { useMemo, useCallback, useRef } from 'react';
+import axios from 'axios';
+import { Button, useToastContext } from '@librechat/client';
+import { useWatch, useForm, FormProvider } from 'react-hook-form';
+import { useGetModelsQuery } from 'librechat-data-provider/react-query';
+import {
+  Tools,
+  SystemRoles,
+  ResourceType,
+  EModelEndpoint,
+  PermissionBits,
+  isAssistantsEndpoint,
+} from 'librechat-data-provider';
+import type { AgentForm, StringOption } from '~/common';
+import {
+  useCreateAgentMutation,
+  useUpdateAgentMutation,
+  useGetAgentByIdQuery,
+  useGetExpandedAgentByIdQuery,
+} from '~/data-provider';
+import { createProviderOption, getDefaultAgentFormValues } from '~/utils';
+import { useResourcePermissions } from '~/hooks/useResourcePermissions';
+import { useSelectAgent, useLocalize, useAuthContext } from '~/hooks';
+import { useAgentPanelContext } from '~/Providers/AgentPanelContext';
+import AgentPanelSkeleton from './AgentPanelSkeleton';
+import AdvancedPanel from './Advanced/AdvancedPanel';
+import { Panel, isEphemeralAgent } from '~/common';
+import AgentConfig from './AgentConfig';
+import AgentSelect from './AgentSelect';
+import AgentFooter from './AgentFooter';
+import ModelPanel from './ModelPanel';
+import { UpgradeWall } from '~/components/SGSST/UpgradeWall';
+
+export default function AgentPanel() {
+  const localize = useLocalize();
+  const { user } = useAuthContext();
+  const { showToast } = useToastContext();
+  const {
+    activePanel,
+    agentsConfig,
+    setActivePanel,
+    endpointsConfig,
+    setCurrentAgentId,
+    agent_id: current_agent_id,
+  } = useAgentPanelContext();
+
+  const { onSelect: onSelectAgent } = useSelectAgent();
+
+  const modelsQuery = useGetModelsQuery();
+  const basicAgentQuery = useGetAgentByIdQuery(current_agent_id);
+
+  const { hasPermission, isLoading: permissionsLoading } = useResourcePermissions(
+    ResourceType.AGENT,
+    basicAgentQuery.data?._id || '',
+  );
+
+  const canEdit = hasPermission(PermissionBits.EDIT);
+
+  const expandedAgentQuery = useGetExpandedAgentByIdQuery(current_agent_id ?? '', {
+    enabled: !isEphemeralAgent(current_agent_id) && canEdit && !permissionsLoading,
+  });
+
+  const agentQuery = canEdit && expandedAgentQuery.data ? expandedAgentQuery : basicAgentQuery;
+
+  const models = useMemo(() => modelsQuery.data ?? {}, [modelsQuery.data]);
+  const methods = useForm<AgentForm>({
+    defaultValues: getDefaultAgentFormValues(),
+    mode: 'onChange',
+  });
+
+  const { control, handleSubmit, reset } = methods;
+  const agent_id = useWatch({ control, name: 'id' });
+  const previousVersionRef = useRef<number | undefined>();
+
+  const allowedProviders = useMemo(
+    () => new Set(agentsConfig?.allowedProviders),
+    [agentsConfig?.allowedProviders],
+  );
+
+  const providers = useMemo(
+    () =>
+      Object.keys(endpointsConfig ?? {})
+        .filter(
+          (key) =>
+            !isAssistantsEndpoint(key) &&
+            (allowedProviders.size > 0 ? allowedProviders.has(key) : true) &&
+            key !== EModelEndpoint.agents &&
+            key !== EModelEndpoint.chatGPTBrowser &&
+            key !== EModelEndpoint.gptPlugins,
+        )
+        .map((provider) => createProviderOption(provider)),
+    [endpointsConfig, allowedProviders],
+  );
+
+  /* Mutations */
+  const update = useUpdateAgentMutation({
+    onMutate: () => {
+      // Store the current version before mutation
+      previousVersionRef.current = agentQuery.data?.version;
+    },
+    onSuccess: (data) => {
+      // Check if agent version is the same (no changes were made)
+      if (previousVersionRef.current !== undefined && data.version === previousVersionRef.current) {
+        showToast({
+          message: localize('com_ui_no_changes'),
+          status: 'info',
+        });
+      } else {
+        showToast({
+          message: `${localize('com_assistants_update_success')} ${data.name ?? localize('com_ui_agent')
+            }`,
+        });
+      }
+      // Clear the ref after use
+      previousVersionRef.current = undefined;
+    },
+    onError: (err) => {
+      const error = err as Error;
+      showToast({
+        message: `${localize('com_agents_update_error')}${error.message ? ` ${localize('com_ui_error')}: ${error.message}` : ''
+          }`,
+        status: 'error',
+      });
+    },
+  });
+
+  const create = useCreateAgentMutation({
+    onSuccess: (data) => {
+      setCurrentAgentId(data.id);
+      showToast({
+        message: `${localize('com_assistants_create_success')} ${data.name ?? localize('com_ui_agent')
+          }`,
+      });
+    },
+    onError: (err) => {
+      const error = err as Error;
+      showToast({
+        message: `${localize('com_agents_create_error')}${error.message ? ` ${localize('com_ui_error')}: ${error.message}` : ''
+          }`,
+        status: 'error',
+      });
+    },
+  });
+
+  const onSubmit = useCallback(
+    (data: AgentForm) => {
+      const tools = data.tools ?? [];
+
+      if (data.execute_code === true) {
+        tools.push(Tools.execute_code);
+      }
+      if (data.file_search === true) {
+        tools.push(Tools.file_search);
+      }
+      if (data.web_search === true) {
+        tools.push(Tools.web_search);
+      }
+
+      const {
+        name,
+        artifacts,
+        description,
+        instructions,
+        model: _model,
+        model_parameters,
+        provider: _provider,
+        agent_ids,
+        edges,
+        end_after_tools,
+        hide_sequential_outputs,
+        recursion_limit,
+        category,
+        support_contact,
+        is_whatsapp_enabled,
+      } = data;
+
+      const model = _model ?? '';
+      const provider =
+        (typeof _provider === 'string' ? _provider : (_provider as StringOption).value) ?? '';
+
+      if (agent_id) {
+        update.mutate({
+          agent_id,
+          data: {
+            name,
+            artifacts,
+            description,
+            instructions,
+            model,
+            tools,
+            provider,
+            model_parameters,
+            agent_ids,
+            edges,
+            end_after_tools,
+            hide_sequential_outputs,
+            recursion_limit,
+            category,
+            support_contact,
+            is_whatsapp_enabled,
+          },
+        });
+        return;
+      }
+
+      if (!provider || !model) {
+        return showToast({
+          message: localize('com_agents_missing_provider_model'),
+          status: 'error',
+        });
+      }
+      if (!name) {
+        return showToast({
+          message: localize('com_agents_missing_name'),
+          status: 'error',
+        });
+      }
+
+      create.mutate({
+        name,
+        artifacts,
+        description,
+        instructions,
+        model,
+        tools,
+        provider,
+        model_parameters,
+        agent_ids,
+        edges,
+        end_after_tools,
+        hide_sequential_outputs,
+        recursion_limit,
+        category,
+        support_contact,
+        is_whatsapp_enabled,
+      });
+    },
+    [agent_id, create, update, showToast, localize],
+  );
+
+  const handleSelectAgent = useCallback(() => {
+    if (agent_id) {
+      onSelectAgent(agent_id);
+    }
+  }, [agent_id, onSelectAgent]);
+
+  const handleExportBackup = useCallback(async () => {
+    try {
+      showToast({
+        message: 'Iniciando exportación de agentes...',
+        status: 'info',
+      });
+      const response = await axios.get('/api/sgsst/sync-agents/export-agents', {
+        responseType: 'blob',
+      });
+
+      const blob = new Blob([response.data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `wappy_agents_backup_${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      showToast({
+        message: 'Copia de seguridad descargada exitosamente.',
+        status: 'success',
+      });
+    } catch (err) {
+      console.error('Failed to export agents:', err);
+      showToast({
+        message: 'Error al exportar agentes: ' + (err instanceof Error ? err.message : String(err)),
+        status: 'error',
+      });
+    }
+  }, [showToast]);
+
+  const handleSyncPrompts = useCallback(async () => {
+    try {
+      showToast({
+        message: 'Limpiando y sincronizando agentes con MongoDB...',
+        status: 'info',
+      });
+      const response = await axios.post('/api/sgsst/sync-agents/cleanup-and-sync');
+
+      showToast({
+        message: response.data.summary || 'Sincronización completada con éxito.',
+        status: 'success',
+      });
+    } catch (err) {
+      console.error('Failed to sync agents:', err);
+      showToast({
+        message: 'Error al sincronizar agentes: ' + ((err as any).response?.data?.error || (err as Error).message),
+        status: 'error',
+      });
+    }
+  }, [showToast]);
+
+  const isCreationBlocked = useMemo(() => {
+    if (user?.role === SystemRoles.ADMIN || user?.role === 'USER_PRO') {
+      return false;
+    }
+    return !current_agent_id || isEphemeralAgent(current_agent_id);
+  }, [user?.role, current_agent_id]);
+
+  const canEditAgent = useMemo(() => {
+    if (isCreationBlocked) {
+      return false;
+    }
+
+    if (!agentQuery.data?.id) {
+      return true;
+    }
+
+    if (user?.role === SystemRoles.ADMIN) {
+      return true;
+    }
+
+    return canEdit;
+  }, [agentQuery.data?.id, user?.role, canEdit, isCreationBlocked]);
+
+  return (
+    <FormProvider {...methods}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="scrollbar-gutter-stable h-auto w-full flex-shrink-0 overflow-x-hidden"
+        aria-label="Agent configuration form"
+      >
+        <div className="mx-1 mt-2 flex w-full flex-wrap gap-2">
+          <div className="w-full">
+            <AgentSelect
+              createMutation={create}
+              agentQuery={agentQuery}
+              setCurrentAgentId={setCurrentAgentId}
+              // The following is required to force re-render the component when the form's agent ID changes
+              // Also maintains ComboBox Focus for Accessibility
+              selectedAgentId={agentQuery.isInitialLoading ? null : (current_agent_id ?? null)}
+            />
+          </div>
+          {/* Create + Select Button */}
+          {agent_id && (
+            <div className="flex w-full flex-col gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full justify-center"
+                onClick={() => {
+                  reset(getDefaultAgentFormValues());
+                  setCurrentAgentId(undefined);
+                }}
+                disabled={agentQuery.isInitialLoading}
+                aria-label={
+                  localize('com_ui_create') +
+                  ' ' +
+                  localize('com_ui_new') +
+                  ' ' +
+                  localize('com_ui_agent')
+                }
+              >
+                <Plus className="mr-1 h-4 w-4" />
+                {localize('com_ui_create') +
+                  ' ' +
+                  localize('com_ui_new') +
+                  ' ' +
+                  localize('com_ui_agent')}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full justify-center"
+                onClick={() => {
+                  const currentValues = methods.getValues();
+                  const newValues = {
+                    ...currentValues,
+                    id: '',
+                    agent: {
+                      ...currentValues.agent,
+                      value: '',
+                      label: `${currentValues.name} (Copia)`,
+                    },
+                    name: `${currentValues.name} (Copia)`,
+                  };
+                  reset(newValues);
+                  setCurrentAgentId(undefined);
+                }}
+                disabled={agentQuery.isInitialLoading}
+                aria-label="Duplicar agente"
+              >
+                <Copy className="mr-1 h-4 w-4" />
+                Duplicar Agente
+              </Button>
+              {user?.role === SystemRoles.ADMIN && (
+                <div className="flex flex-col gap-2 w-full">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full justify-center border-emerald-500/30 hover:border-emerald-500/50 hover:bg-emerald-500/5 text-emerald-600 dark:text-emerald-400 transition-all duration-300 ease-in-out shadow-sm"
+                    onClick={handleExportBackup}
+                    disabled={agentQuery.isInitialLoading}
+                    aria-label="Exportar Copia de Seguridad"
+                  >
+                    <Download className="mr-1 h-4 w-4 animate-bounce" style={{ animationDuration: '2s' }} />
+                    Exportar Agentes
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full justify-center border-cyan-500/30 hover:border-cyan-500/50 hover:bg-cyan-500/5 text-cyan-600 dark:text-cyan-400 transition-all duration-300 ease-in-out shadow-sm"
+                    onClick={handleSyncPrompts}
+                    disabled={agentQuery.isInitialLoading}
+                    aria-label="Sincronizar Prompts Locales"
+                  >
+                    <RefreshCw className="mr-1 h-4 w-4" />
+                    Sincronizar Prompts
+                  </Button>
+                </div>
+              )}
+              <Button
+                variant="submit"
+                className="w-full justify-center"
+                disabled={isEphemeralAgent(agent_id) || agentQuery.isInitialLoading}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSelectAgent();
+                }}
+                aria-label={localize('com_ui_select') + ' ' + localize('com_ui_agent')}
+              >
+                {localize('com_ui_select')}
+              </Button>
+            </div>
+          )}
+        </div>
+        {agentQuery.isInitialLoading && <AgentPanelSkeleton />}
+        {isCreationBlocked && !agentQuery.isInitialLoading && (
+          <div className="mt-4">
+            <UpgradeWall
+              isCompact
+              plan={user?.role}
+              title="Constructor de Agentes"
+              description="La creación de agentes personalizados es una función exclusiva. Actualiza tu plan para empezar a construir tus propios agentes."
+            />
+          </div>
+        )}
+        {!canEditAgent && !isCreationBlocked && !agentQuery.isInitialLoading && (
+          <div className="flex h-[30vh] w-full items-center justify-center">
+            <div className="text-center">
+              <h2 className="text-token-text-primary m-2 text-xl font-semibold">
+                {localize('com_agents_not_available')}
+              </h2>
+              <p className="text-token-text-secondary">{localize('com_agents_no_access')}</p>
+            </div>
+          </div>
+        )}
+        {canEditAgent && !agentQuery.isInitialLoading && activePanel === Panel.model && (
+          <ModelPanel models={models} providers={providers} setActivePanel={setActivePanel} />
+        )}
+        {canEditAgent && !agentQuery.isInitialLoading && activePanel === Panel.builder && (
+          <AgentConfig createMutation={create} />
+        )}
+        {canEditAgent && !agentQuery.isInitialLoading && activePanel === Panel.advanced && (
+          <AdvancedPanel />
+        )}
+        {canEditAgent && !agentQuery.isInitialLoading && (
+          <AgentFooter
+            createMutation={create}
+            updateMutation={update}
+            activePanel={activePanel}
+            setActivePanel={setActivePanel}
+            setCurrentAgentId={setCurrentAgentId}
+          />
+        )}
+      </form>
+    </FormProvider>
+  );
+}

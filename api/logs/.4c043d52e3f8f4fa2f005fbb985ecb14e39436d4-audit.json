@@ -1,0 +1,40 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/Users/venta/Documents/GitHub/LibreChat-WAPPY/api/logs/.4c043d52e3f8f4fa2f005fbb985ecb14e39436d4-audit.json",
+    "files": [
+        {
+            "date": 1778955184765,
+            "name": "/Users/venta/Documents/GitHub/LibreChat-WAPPY/api/logs/error-2026-05-16.log",
+            "hash": "cef904ceac2d2bb92561af1b4b335a4afab13277046a367eec2a7d2abcdf91b1"
+        },
+        {
+            "date": 1779229198238,
+            "name": "/Users/venta/Documents/GitHub/LibreChat-WAPPY/api/logs/error-2026-05-19.log",
+            "hash": "6de0f3cc9700906df9a4cb6b9e1341a24fd20fd3ac9d9c4966091e43b46363f0"
+        },
+        {
+            "date": 1779270453915,
+            "name": "/Users/venta/Documents/GitHub/LibreChat-WAPPY/api/logs/error-2026-05-20.log",
+            "hash": "018e8ff1636a107c8a4190cac88d84e614820f8a8ea8bcd294880aa2e781b3c4"
+        },
+        {
+            "date": 1779371176961,
+            "name": "/Users/venta/Documents/GitHub/LibreChat-WAPPY/api/logs/error-2026-05-21.log",
+            "hash": "4548852523111321ece524232c3bd3ab6eed10f0f7040d3c38b544d5380b56b4"
+        },
+        {
+            "date": 1779455848698,
+            "name": "/Users/venta/Documents/GitHub/LibreChat-WAPPY/api/logs/error-2026-05-22.log",
+            "hash": "e5488c131d9b46b512b0470ec8650e270949d6e176501a55f5255c42a7d749d8"
+        },
+        {
+            "date": 1779550634691,
+            "name": "/Users/venta/Documents/GitHub/LibreChat-WAPPY/api/logs/error-2026-05-23.log",
+            "hash": "ab40f0a23f21b4275cfd95972e0503fe73dd8c44d244dbb262b70a87defe68ac"
+        }
+    ],
+    "hashType": "sha256"
+}

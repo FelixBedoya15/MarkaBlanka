@@ -1,0 +1,206 @@
+const { z } = require('zod');
+const { Tool } = require('@langchain/core/tools');
+const mongoose = require('mongoose');
+
+class ConsultarAgenteEspecializado extends Tool {
+  constructor(fields = {}) {
+    super();
+    this.name = 'consultar_agente_especializado';
+    this.description =
+      'Herramienta de enrutamiento: Utiliza esta herramienta SÓLO para delegar una consulta a un Agente Especialista del sistema cuando el usuario hace preguntas o solicitudes técnicas que salen de tu jurisdicción inicial. Debes pasar siempre el nombre exacto del especialista y la instrucción explícita del usuario.';
+    this.req = fields.req;
+
+    this.schema = z.object({
+      nombre_especialista: z
+        .string()
+        .describe(
+          'El nombre exacto del Agente Especialista al cual deseas consultar, deducido según tu análisis de la solicitud.',
+        ),
+      consulta_completa: z
+        .string()
+        .describe(
+          'La consulta íntegra y detallada proporcionada por el usuario original, que el especialista deberá responder.',
+        ),
+    });
+  }
+
+  async _call(input) {
+    try {
+      const userId = this.req?.user?.id;
+      if (!userId) {
+        return "❌ Error: Usuario no autenticado para invocar agentes.";
+      }
+
+      const { nombre_especialista, consulta_completa } = input;
+
+      const Agent = mongoose.models.Agent;
+      if (!Agent) {
+        return "❌ Error: No se pudo cargar el modelo de Agentes del sistema central.";
+      }
+
+      // Buscar todos los especialistas activos
+      const agents = await Agent.find({ is_whatsapp_enabled: true });
+      if (!agents || agents.length === 0) {
+        return "❌ Error: No hay especialistas disponibles con el permiso de WhatsApp activado.";
+      }
+
+      // Funcion de limpieza para comparar (quita tildes, @ por a, minusculas, espacios extra)
+      const cleanString = (str) => {
+        return (str || '').toLowerCase()
+          .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Quita tildes
+          .replace(/@/g, 'a') // Cambia @ por a (medic@ -> medica)
+          .replace(/[^a-z0-9 ]/g, '') // Quita caracteres especiales
+          .replace(/\s+/g, ' ').trim();
+      };
+
+      const queryStr = cleanString(nombre_especialista);
+      let agent = null;
+
+      // 1. Intento de coincidencia exacta mejorada (limpia)
+      agent = agents.find((a) => cleanString(a.name) === queryStr);
+
+      // 2. Búsqueda por similitud si el usuario cometió un gran error de tipeo
+      if (!agent) {
+        const queryWords = queryStr.split(' ').filter((w) => w.length > 2);
+        let maxScore = 0;
+        
+        for (const a of agents) {
+          const agName = cleanString(a.name);
+          let score = 0;
+          
+          for (const w of queryWords) {
+            if (agName.includes(w)) score++;
+          }
+          if (agName.includes(queryStr)) score += 5; // Bonus grande si la frase encaja junta
+          
+          if (score > maxScore && score > 0) {
+            maxScore = score;
+            agent = a;
+          }
+        }
+      }
+
+      if (!agent) {
+        // Enviar al LLM la lista de los válidos para que en su segundo intento elija al correcto.
+        const validos = agents.map((a) => a.name).join(', ');
+        return `❌ No se encontró ningún Agente Especialista que coincida con "${nombre_especialista}". Se sugiere utilizar un especialista de la siguiente lista de válidos: [${validos}]. Asegúrate de usar uno de estos nombres textualmente.`;
+      }
+
+      // Generar token JWT derivado del req actual para invocar el endpoint interno
+      const jwt = require('jsonwebtoken');
+      const token = jwt.sign({ id: userId.toString() }, process.env.JWT_SECRET, {
+        expiresIn: '5m',
+      });
+
+      // Crear hilo o convo efímera
+      const crypto = require('crypto');
+      const hash = crypto.createHash('sha256');
+      hash.update(`whatsapp-specialist-${agent._id.toString()}-${userId}`);
+      const conversationId = hash.digest('hex').substring(0, 24);
+
+      console.log(`[RouterTool] Derivando consulta a: ${agent.name}`);
+
+      const payload = {
+        endpoint: 'agents',
+        conversationId: 'new',
+        messageId: crypto.randomUUID(),
+        text: consulta_completa,
+        agent_id: agent.id || agent._id.toString(),
+        ephemeralAgent: {
+          // Si el especialista tiene sus propias herramientas (ej. "somos_sst"), se usarán.
+          tools: agent.tools || [],
+        }
+      };
+
+      const response = await fetch('http://localhost:3080/api/agents/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        return `❌ Error interno conectando con el especialista ${agent.name} (HTTP ${response.status}).`;
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let finalResponseText = '';
+      let accumulatedDeltas = '';
+      let buffer = '';
+      let rawDebugStream = '';
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+
+        const partialChunk = decoder.decode(value, { stream: true });
+        rawDebugStream += partialChunk; // Acumular para debug
+        
+        buffer += partialChunk;
+        const lines = buffer.split('\n');
+        
+        // Dejamos en el buffer la última línea incompleta (si la hay)
+        buffer = lines.pop();
+
+        for (let line of lines) {
+          if (line.trim() === '') continue;
+          if (line.startsWith('data: ')) {
+            const dataStr = line.replace(/^data:\s*/, '').trim();
+            if (dataStr === '[DONE]') continue;
+            try {
+              const dataObj = JSON.parse(dataStr);
+              
+              // 1. Extraer respuesta final si existe
+              if (dataObj.final) {
+                 if (dataObj.responseMessage && dataObj.responseMessage.text) {
+                    finalResponseText = dataObj.responseMessage.text;
+                 } else if (dataObj.message && dataObj.message.text) {
+                    finalResponseText = dataObj.message.text;
+                 }
+              }
+              
+              // 2. Acumular deltas (agentes LangGraph)
+              if (dataObj.event === 'on_message_delta' && dataObj.data?.delta?.content) {
+                 for (const c of dataObj.data.delta.content) {
+                    if (c.type === 'text' && c.text) {
+                       accumulatedDeltas += c.text;
+                    }
+                 }
+              } 
+              // 3. Fallback: streams antiguos envían el texto completo que va creciendo
+              else if (dataObj.text && typeof dataObj.text === 'string') {
+                 if (dataObj.text.length > accumulatedDeltas.length) {
+                    accumulatedDeltas = dataObj.text;
+                 }
+              }
+            } catch (e) {
+              // Ignorar strings truncados u otros errores del parseo en vivo
+            }
+          }
+        }
+      }
+
+      if (!finalResponseText) {
+          finalResponseText = accumulatedDeltas;
+      }
+
+      if (finalResponseText && finalResponseText.trim().length > 0) {
+        return `✅ [Respuesta de Especialista ${agent.name}]:\n${finalResponseText}`;
+      } else {
+        // Truncar rawDebugStream a los ultimos 1000 caracteres para no romper UI
+        const safeDebug = rawDebugStream.length > 1000 ? rawDebugStream.substring(0, 1000) + '...' : rawDebugStream;
+        return `❌ El especialista ${agent.name} procesó la solicitud pero no generó respuesta legible. (El texto estaba vacío).\n\n--- DUMP INTERNO DE LA RESPUESTA DE LA API ---\n${safeDebug}`;
+      }
+
+    } catch (error) {
+      console.error('[ConsultarAgenteEspecializado Tool] Error:', error);
+      return `❌ Hubo un error de orquestación al contactar al especialista: ${error.message}`;
+    }
+  }
+}
+
+module.exports = ConsultarAgenteEspecializado;

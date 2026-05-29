@@ -1,0 +1,148 @@
+diff --git a/node_modules/@librechat/agents/dist/cjs/events.cjs b/node_modules/@librechat/agents/dist/cjs/events.cjs
+index 1ebb7f6..acbea50 100644
+--- a/node_modules/@librechat/agents/dist/cjs/events.cjs
++++ b/node_modules/@librechat/agents/dist/cjs/events.cjs
+@@ -29,6 +29,14 @@ class ModelEndHandler {
+         if (usage != null && this.collectedUsage != null) {
+             this.collectedUsage.push(usage);
+         }
++        if (data?.output && data?.output?.tool_calls && data.output.additional_kwargs && data.output.additional_kwargs.__gemini_function_call_thought_signatures__) {
++            const sigs = data.output.additional_kwargs.__gemini_function_call_thought_signatures__;
++            data.output.tool_calls.forEach((tc, index) => {
++                if (sigs[index]) {
++                    tc.signature = sigs[index];
++                }
++            });
++        }
+         if (metadata.ls_provider === 'FakeListChatModel') {
+             return handlers.handleToolCalls(data?.output?.tool_calls, metadata, graph);
+         }
+diff --git a/node_modules/@librechat/agents/dist/cjs/llm/google/index.cjs b/node_modules/@librechat/agents/dist/cjs/llm/google/index.cjs
+index 48c6de6..81f7f15 100644
+--- a/node_modules/@librechat/agents/dist/cjs/llm/google/index.cjs
++++ b/node_modules/@librechat/agents/dist/cjs/llm/google/index.cjs
+@@ -72,6 +72,14 @@ class CustomChatGoogleGenerativeAI extends googleGenai.ChatGoogleGenerativeAI {
+         });
+         this.streamUsage = fields.streamUsage ?? this.streamUsage;
+     }
++
++    get _isMultimodalModel() {
++        return (this.model.includes('vision') ||
++            this.model.startsWith('gemini-1.5') ||
++            this.model.startsWith('gemini-2') ||
++            this.model.startsWith('gemini-3'));
++    }
++
+     static lc_name() {
+         return 'LibreChatGoogleGenerativeAI';
+     }
+diff --git a/node_modules/@librechat/agents/dist/cjs/llm/google/utils/common.cjs b/node_modules/@librechat/agents/dist/cjs/llm/google/utils/common.cjs
+index 450e0d6..d8bf6a1 100644
+--- a/node_modules/@librechat/agents/dist/cjs/llm/google/utils/common.cjs
++++ b/node_modules/@librechat/agents/dist/cjs/llm/google/utils/common.cjs
+@@ -329,13 +329,21 @@ function convertMessageContentToParts(message, isMultimodalModel, previousMessag
+             .filter((p) => p !== undefined));
+     }
+     if (messages.isAIMessage(message) && message.tool_calls?.length != null) {
+-        functionCalls = message.tool_calls.map((tc) => {
+-            return {
+-                functionCall: {
+-                    name: tc.name,
+-                    args: tc.args,
+-                },
++        const sigs = message.additional_kwargs?.__gemini_function_call_thought_signatures__;
++        functionCalls = message.tool_calls.map((tc, idx) => {
++            const resultFunc = {
++                name: tc.name,
++                args: tc.args,
+             };
++            const part = {
++                functionCall: resultFunc,
++            };
++            if (sigs && sigs[idx]) {
++                part.thought_signature = sigs[idx];
++            } else if (tc.signature) {
++                part.thought_signature = tc.signature;
++            }
++            return part;
+         });
+     }
+     return [...messageParts, ...functionCalls];
+@@ -458,6 +466,20 @@ function convertResponseContentToChatGenerationChunk(response, extra) {
+         })));
+     }
+     const additional_kwargs = {};
++    const signatures = [];
++    if (candidateContent && Array.isArray(candidateContent.parts)) {
++        for (const pt of candidateContent.parts) {
++            if (pt?.functionCall) {
++                if (pt.thoughtSignature) signatures.push(pt.thoughtSignature);
++                else if (pt.thought_signature) signatures.push(pt.thought_signature);
++                else if (pt.functionCall.thought_signature) signatures.push(pt.functionCall.thought_signature);
++                else if (pt.functionCall.thoughtSignature) signatures.push(pt.functionCall.thoughtSignature);
++            }
++        }
++    }
++    if (signatures.length > 0) {
++        additional_kwargs.__gemini_function_call_thought_signatures__ = signatures;
++    }
+     if (reasoningParts.length > 0) {
+         additional_kwargs.reasoning = reasoningParts.join('');
+     }
+diff --git a/node_modules/@librechat/agents/dist/cjs/messages/format.cjs b/node_modules/@librechat/agents/dist/cjs/messages/format.cjs
+index 3579d89..4c52770 100644
+--- a/node_modules/@librechat/agents/dist/cjs/messages/format.cjs
++++ b/node_modules/@librechat/agents/dist/cjs/messages/format.cjs
+@@ -212,6 +212,13 @@ function formatAssistantMessage(message) {
+                     lastAIMessage.tool_calls = [];
+                 }
+                 lastAIMessage.tool_calls.push(tool_call);
++                if (tool_call.signature) {
++                    if (!lastAIMessage.additional_kwargs) lastAIMessage.additional_kwargs = {};
++                    if (!lastAIMessage.additional_kwargs.__gemini_function_call_thought_signatures__) {
++                        lastAIMessage.additional_kwargs.__gemini_function_call_thought_signatures__ = [];
++                    }
++                    lastAIMessage.additional_kwargs.__gemini_function_call_thought_signatures__.push(tool_call.signature);
++                }
+                 formattedMessages.push(new messages.ToolMessage({
+                     tool_call_id: tool_call.id ?? '',
+                     name: tool_call.name,
+diff --git a/node_modules/@librechat/agents/dist/esm/llm/google/index.mjs b/node_modules/@librechat/agents/dist/esm/llm/google/index.mjs
+index f936ded..1aa6088 100644
+--- a/node_modules/@librechat/agents/dist/esm/llm/google/index.mjs
++++ b/node_modules/@librechat/agents/dist/esm/llm/google/index.mjs
+@@ -70,6 +70,14 @@ class CustomChatGoogleGenerativeAI extends ChatGoogleGenerativeAI {
+         });
+         this.streamUsage = fields.streamUsage ?? this.streamUsage;
+     }
++
++    get _isMultimodalModel() {
++        return (this.model.includes('vision') ||
++            this.model.startsWith('gemini-1.5') ||
++            this.model.startsWith('gemini-2') ||
++            this.model.startsWith('gemini-3'));
++    }
++
+     static lc_name() {
+         return 'LibreChatGoogleGenerativeAI';
+     }
+diff --git a/node_modules/@librechat/agents/src/llm/google/index.ts b/node_modules/@librechat/agents/src/llm/google/index.ts
+index 2ab8c94..6e2954a 100644
+--- a/node_modules/@librechat/agents/src/llm/google/index.ts
++++ b/node_modules/@librechat/agents/src/llm/google/index.ts
+@@ -107,6 +107,15 @@ export class CustomChatGoogleGenerativeAI extends ChatGoogleGenerativeAI {
+     this.streamUsage = fields.streamUsage ?? this.streamUsage;
+   }
+ 
++  get _isMultimodalModel(): boolean {
++    return (
++      this.model.includes('vision') ||
++      this.model.startsWith('gemini-1.5') ||
++      this.model.startsWith('gemini-2') ||
++      this.model.startsWith('gemini-3')
++    );
++  }
++
+   static lc_name(): 'LibreChatGoogleGenerativeAI' {
+     return 'LibreChatGoogleGenerativeAI';
+   }
