@@ -560,6 +560,12 @@ export const interfaceSchema = z
       .optional(),
     fileSearch: z.boolean().optional(),
     fileCitations: z.boolean().optional(),
+    liveChat: z.boolean().optional(),
+    liveAnalysis: z.boolean().optional(),
+    artifacts: z.boolean().optional(),
+    endpoints: z.boolean().optional(),
+    attachments: z.boolean().optional(),
+    sgsst: z.boolean().optional(),
   })
   .default({
     endpointsMenu: true,
@@ -585,6 +591,12 @@ export const interfaceSchema = z
     },
     fileSearch: true,
     fileCitations: true,
+    liveChat: true,
+    liveAnalysis: true,
+    artifacts: true,
+    endpoints: true,
+    attachments: true,
+    sgsst: true,
   });
 
 export type TInterfaceConfig = z.infer<typeof interfaceSchema>;

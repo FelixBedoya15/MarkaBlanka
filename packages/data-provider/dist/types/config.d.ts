@@ -1076,6 +1076,12 @@ export declare const interfaceSchema: z.ZodDefault<z.ZodObject<{
     }>>;
     fileSearch: z.ZodOptional<z.ZodBoolean>;
     fileCitations: z.ZodOptional<z.ZodBoolean>;
+    liveChat: z.ZodOptional<z.ZodBoolean>;
+    liveAnalysis: z.ZodOptional<z.ZodBoolean>;
+    artifacts: z.ZodOptional<z.ZodBoolean>;
+    endpoints: z.ZodOptional<z.ZodBoolean>;
+    attachments: z.ZodOptional<z.ZodBoolean>;
+    sgsst: z.ZodOptional<z.ZodBoolean>;
 }, "strip", z.ZodTypeAny, {
     webSearch?: boolean | undefined;
     mcpServers?: {
@@ -1116,6 +1122,12 @@ export declare const interfaceSchema: z.ZodDefault<z.ZodObject<{
     } | undefined;
     fileSearch?: boolean | undefined;
     fileCitations?: boolean | undefined;
+    liveChat?: boolean | undefined;
+    liveAnalysis?: boolean | undefined;
+    artifacts?: boolean | undefined;
+    endpoints?: boolean | undefined;
+    attachments?: boolean | undefined;
+    sgsst?: boolean | undefined;
 }, {
     webSearch?: boolean | undefined;
     mcpServers?: {
@@ -1156,6 +1168,12 @@ export declare const interfaceSchema: z.ZodDefault<z.ZodObject<{
     } | undefined;
     fileSearch?: boolean | undefined;
     fileCitations?: boolean | undefined;
+    liveChat?: boolean | undefined;
+    liveAnalysis?: boolean | undefined;
+    artifacts?: boolean | undefined;
+    endpoints?: boolean | undefined;
+    attachments?: boolean | undefined;
+    sgsst?: boolean | undefined;
 }>>;
 export type TInterfaceConfig = z.infer<typeof interfaceSchema>;
 export type TBalanceConfig = z.infer<typeof balanceSchema>;
@@ -2589,6 +2607,12 @@ export declare const configSchema: z.ZodObject<{
         }>>;
         fileSearch: z.ZodOptional<z.ZodBoolean>;
         fileCitations: z.ZodOptional<z.ZodBoolean>;
+        liveChat: z.ZodOptional<z.ZodBoolean>;
+        liveAnalysis: z.ZodOptional<z.ZodBoolean>;
+        artifacts: z.ZodOptional<z.ZodBoolean>;
+        endpoints: z.ZodOptional<z.ZodBoolean>;
+        attachments: z.ZodOptional<z.ZodBoolean>;
+        sgsst: z.ZodOptional<z.ZodBoolean>;
     }, "strip", z.ZodTypeAny, {
         webSearch?: boolean | undefined;
         mcpServers?: {
@@ -2629,6 +2653,12 @@ export declare const configSchema: z.ZodObject<{
         } | undefined;
         fileSearch?: boolean | undefined;
         fileCitations?: boolean | undefined;
+        liveChat?: boolean | undefined;
+        liveAnalysis?: boolean | undefined;
+        artifacts?: boolean | undefined;
+        endpoints?: boolean | undefined;
+        attachments?: boolean | undefined;
+        sgsst?: boolean | undefined;
     }, {
         webSearch?: boolean | undefined;
         mcpServers?: {
@@ -2669,6 +2699,12 @@ export declare const configSchema: z.ZodObject<{
         } | undefined;
         fileSearch?: boolean | undefined;
         fileCitations?: boolean | undefined;
+        liveChat?: boolean | undefined;
+        liveAnalysis?: boolean | undefined;
+        artifacts?: boolean | undefined;
+        endpoints?: boolean | undefined;
+        attachments?: boolean | undefined;
+        sgsst?: boolean | undefined;
     }>>;
     turnstile: z.ZodOptional<z.ZodObject<{
         siteKey: z.ZodString;
@@ -3513,6 +3549,7 @@ export declare const configSchema: z.ZodObject<{
                 model: z.ZodOptional<z.ZodNullable<z.ZodString>>;
                 spec: z.ZodOptional<z.ZodNullable<z.ZodString>>;
                 instructions: z.ZodOptional<z.ZodString>;
+                artifacts: z.ZodOptional<z.ZodString>;
                 fileTokenLimit: z.ZodOptional<z.ZodEffects<z.ZodUnion<[z.ZodNumber, z.ZodString]>, number | undefined, string | number>>;
                 modelLabel: z.ZodOptional<z.ZodNullable<z.ZodString>>;
                 userLabel: z.ZodOptional<z.ZodString>;
@@ -3532,7 +3569,6 @@ export declare const configSchema: z.ZodObject<{
                 thinking: z.ZodOptional<z.ZodBoolean>;
                 thinkingBudget: z.ZodOptional<z.ZodEffects<z.ZodUnion<[z.ZodNumber, z.ZodString]>, number | undefined, string | number>>;
                 stream: z.ZodOptional<z.ZodBoolean>;
-                artifacts: z.ZodOptional<z.ZodString>;
                 context: z.ZodOptional<z.ZodNullable<z.ZodString>>;
                 examples: z.ZodOptional<z.ZodArray<z.ZodObject<{
                     input: z.ZodObject<{
@@ -3685,6 +3721,7 @@ export declare const configSchema: z.ZodObject<{
                 model?: string | null | undefined;
                 spec?: string | null | undefined;
                 instructions?: string | undefined;
+                artifacts?: string | undefined;
                 fileTokenLimit?: number | undefined;
                 modelLabel?: string | null | undefined;
                 userLabel?: string | undefined;
@@ -3704,7 +3741,6 @@ export declare const configSchema: z.ZodObject<{
                 thinking?: boolean | undefined;
                 thinkingBudget?: number | undefined;
                 stream?: boolean | undefined;
-                artifacts?: string | undefined;
                 context?: string | null | undefined;
                 examples?: {
                     input: {
@@ -3797,6 +3833,7 @@ export declare const configSchema: z.ZodObject<{
                 model?: string | null | undefined;
                 spec?: string | null | undefined;
                 instructions?: string | undefined;
+                artifacts?: string | undefined;
                 fileTokenLimit?: string | number | undefined;
                 modelLabel?: string | null | undefined;
                 userLabel?: string | undefined;
@@ -3816,7 +3853,6 @@ export declare const configSchema: z.ZodObject<{
                 thinking?: boolean | undefined;
                 thinkingBudget?: string | number | undefined;
                 stream?: boolean | undefined;
-                artifacts?: string | undefined;
                 context?: string | null | undefined;
                 examples?: {
                     input: {
@@ -3925,6 +3961,7 @@ export declare const configSchema: z.ZodObject<{
                 model?: string | null | undefined;
                 spec?: string | null | undefined;
                 instructions?: string | undefined;
+                artifacts?: string | undefined;
                 fileTokenLimit?: number | undefined;
                 modelLabel?: string | null | undefined;
                 userLabel?: string | undefined;
@@ -3944,7 +3981,6 @@ export declare const configSchema: z.ZodObject<{
                 thinking?: boolean | undefined;
                 thinkingBudget?: number | undefined;
                 stream?: boolean | undefined;
-                artifacts?: string | undefined;
                 context?: string | null | undefined;
                 examples?: {
                     input: {
@@ -4053,6 +4089,7 @@ export declare const configSchema: z.ZodObject<{
                 model?: string | null | undefined;
                 spec?: string | null | undefined;
                 instructions?: string | undefined;
+                artifacts?: string | undefined;
                 fileTokenLimit?: string | number | undefined;
                 modelLabel?: string | null | undefined;
                 userLabel?: string | undefined;
@@ -4072,7 +4109,6 @@ export declare const configSchema: z.ZodObject<{
                 thinking?: boolean | undefined;
                 thinkingBudget?: string | number | undefined;
                 stream?: boolean | undefined;
-                artifacts?: string | undefined;
                 context?: string | null | undefined;
                 examples?: {
                     input: {
@@ -4186,6 +4222,7 @@ export declare const configSchema: z.ZodObject<{
                 model?: string | null | undefined;
                 spec?: string | null | undefined;
                 instructions?: string | undefined;
+                artifacts?: string | undefined;
                 fileTokenLimit?: number | undefined;
                 modelLabel?: string | null | undefined;
                 userLabel?: string | undefined;
@@ -4205,7 +4242,6 @@ export declare const configSchema: z.ZodObject<{
                 thinking?: boolean | undefined;
                 thinkingBudget?: number | undefined;
                 stream?: boolean | undefined;
-                artifacts?: string | undefined;
                 context?: string | null | undefined;
                 examples?: {
                     input: {
@@ -4317,6 +4353,7 @@ export declare const configSchema: z.ZodObject<{
                 model?: string | null | undefined;
                 spec?: string | null | undefined;
                 instructions?: string | undefined;
+                artifacts?: string | undefined;
                 fileTokenLimit?: string | number | undefined;
                 modelLabel?: string | null | undefined;
                 userLabel?: string | undefined;
@@ -4336,7 +4373,6 @@ export declare const configSchema: z.ZodObject<{
                 thinking?: boolean | undefined;
                 thinkingBudget?: string | number | undefined;
                 stream?: boolean | undefined;
-                artifacts?: string | undefined;
                 context?: string | null | undefined;
                 examples?: {
                     input: {
@@ -5995,6 +6031,12 @@ export declare const configSchema: z.ZodObject<{
         } | undefined;
         fileSearch?: boolean | undefined;
         fileCitations?: boolean | undefined;
+        liveChat?: boolean | undefined;
+        liveAnalysis?: boolean | undefined;
+        artifacts?: boolean | undefined;
+        endpoints?: boolean | undefined;
+        attachments?: boolean | undefined;
+        sgsst?: boolean | undefined;
     };
     fileStrategy: FileSources;
     registration: {
@@ -6195,129 +6237,6 @@ export declare const configSchema: z.ZodObject<{
             description: string;
         }> | undefined;
     }> | undefined;
-    turnstile?: {
-        siteKey: string;
-        options?: {
-            language: string;
-            size: "normal" | "compact" | "flexible" | "invisible";
-        } | undefined;
-    } | undefined;
-    fileStrategies?: {
-        default?: FileSources | undefined;
-        avatar?: FileSources | undefined;
-        image?: FileSources | undefined;
-        document?: FileSources | undefined;
-    } | undefined;
-    actions?: {
-        allowedDomains?: string[] | undefined;
-    } | undefined;
-    balance?: {
-        enabled: boolean;
-        startBalance: number;
-        autoRefillEnabled: boolean;
-        refillIntervalValue: number;
-        refillIntervalUnit: "seconds" | "minutes" | "hours" | "days" | "weeks" | "months";
-        refillAmount: number;
-    } | undefined;
-    transactions?: {
-        enabled: boolean;
-    } | undefined;
-    speech?: {
-        tts?: {
-            openai?: {
-                model: string;
-                apiKey: string;
-                voices: string[];
-                url?: string | undefined;
-            } | undefined;
-            azureOpenAI?: {
-                model: string;
-                apiKey: string;
-                voices: string[];
-                instanceName: string;
-                deploymentName: string;
-                apiVersion: string;
-            } | undefined;
-            elevenlabs?: {
-                model: string;
-                apiKey: string;
-                voices: string[];
-                url?: string | undefined;
-                websocketUrl?: string | undefined;
-                voice_settings?: {
-                    similarity_boost?: number | undefined;
-                    stability?: number | undefined;
-                    style?: number | undefined;
-                    use_speaker_boost?: boolean | undefined;
-                } | undefined;
-                pronunciation_dictionary_locators?: string[] | undefined;
-            } | undefined;
-            localai?: {
-                url: string;
-                voices: string[];
-                backend: string;
-                apiKey?: string | undefined;
-            } | undefined;
-        } | undefined;
-        stt?: {
-            openai?: {
-                model: string;
-                apiKey: string;
-                url?: string | undefined;
-            } | undefined;
-            azureOpenAI?: {
-                apiKey: string;
-                instanceName: string;
-                deploymentName: string;
-                apiVersion: string;
-            } | undefined;
-        } | undefined;
-        speechTab?: {
-            conversationMode?: boolean | undefined;
-            advancedMode?: boolean | undefined;
-            speechToText?: boolean | {
-                engineSTT?: string | undefined;
-                languageSTT?: string | undefined;
-                autoTranscribeAudio?: boolean | undefined;
-                decibelValue?: number | undefined;
-                autoSendText?: number | undefined;
-            } | undefined;
-            textToSpeech?: boolean | {
-                engineTTS?: string | undefined;
-                voice?: string | undefined;
-                languageTTS?: string | undefined;
-                automaticPlayback?: boolean | undefined;
-                playbackRate?: number | undefined;
-                cacheTTS?: boolean | undefined;
-            } | undefined;
-        } | undefined;
-    } | undefined;
-    rateLimits?: {
-        tts?: {
-            ipMax?: number | undefined;
-            ipWindowInMinutes?: number | undefined;
-            userMax?: number | undefined;
-            userWindowInMinutes?: number | undefined;
-        } | undefined;
-        stt?: {
-            ipMax?: number | undefined;
-            ipWindowInMinutes?: number | undefined;
-            userMax?: number | undefined;
-            userWindowInMinutes?: number | undefined;
-        } | undefined;
-        fileUploads?: {
-            ipMax?: number | undefined;
-            ipWindowInMinutes?: number | undefined;
-            userMax?: number | undefined;
-            userWindowInMinutes?: number | undefined;
-        } | undefined;
-        conversationsImport?: {
-            ipMax?: number | undefined;
-            ipWindowInMinutes?: number | undefined;
-            userMax?: number | undefined;
-            userWindowInMinutes?: number | undefined;
-        } | undefined;
-    } | undefined;
     endpoints?: {
         azureOpenAI?: ({
             groups: ({
@@ -6525,6 +6444,129 @@ export declare const configSchema: z.ZodObject<{
             titlePromptTemplate?: string | undefined;
         } | undefined;
     } | undefined;
+    turnstile?: {
+        siteKey: string;
+        options?: {
+            language: string;
+            size: "normal" | "compact" | "flexible" | "invisible";
+        } | undefined;
+    } | undefined;
+    fileStrategies?: {
+        default?: FileSources | undefined;
+        avatar?: FileSources | undefined;
+        image?: FileSources | undefined;
+        document?: FileSources | undefined;
+    } | undefined;
+    actions?: {
+        allowedDomains?: string[] | undefined;
+    } | undefined;
+    balance?: {
+        enabled: boolean;
+        startBalance: number;
+        autoRefillEnabled: boolean;
+        refillIntervalValue: number;
+        refillIntervalUnit: "seconds" | "minutes" | "hours" | "days" | "weeks" | "months";
+        refillAmount: number;
+    } | undefined;
+    transactions?: {
+        enabled: boolean;
+    } | undefined;
+    speech?: {
+        tts?: {
+            openai?: {
+                model: string;
+                apiKey: string;
+                voices: string[];
+                url?: string | undefined;
+            } | undefined;
+            azureOpenAI?: {
+                model: string;
+                apiKey: string;
+                voices: string[];
+                instanceName: string;
+                deploymentName: string;
+                apiVersion: string;
+            } | undefined;
+            elevenlabs?: {
+                model: string;
+                apiKey: string;
+                voices: string[];
+                url?: string | undefined;
+                websocketUrl?: string | undefined;
+                voice_settings?: {
+                    similarity_boost?: number | undefined;
+                    stability?: number | undefined;
+                    style?: number | undefined;
+                    use_speaker_boost?: boolean | undefined;
+                } | undefined;
+                pronunciation_dictionary_locators?: string[] | undefined;
+            } | undefined;
+            localai?: {
+                url: string;
+                voices: string[];
+                backend: string;
+                apiKey?: string | undefined;
+            } | undefined;
+        } | undefined;
+        stt?: {
+            openai?: {
+                model: string;
+                apiKey: string;
+                url?: string | undefined;
+            } | undefined;
+            azureOpenAI?: {
+                apiKey: string;
+                instanceName: string;
+                deploymentName: string;
+                apiVersion: string;
+            } | undefined;
+        } | undefined;
+        speechTab?: {
+            conversationMode?: boolean | undefined;
+            advancedMode?: boolean | undefined;
+            speechToText?: boolean | {
+                engineSTT?: string | undefined;
+                languageSTT?: string | undefined;
+                autoTranscribeAudio?: boolean | undefined;
+                decibelValue?: number | undefined;
+                autoSendText?: number | undefined;
+            } | undefined;
+            textToSpeech?: boolean | {
+                engineTTS?: string | undefined;
+                voice?: string | undefined;
+                languageTTS?: string | undefined;
+                automaticPlayback?: boolean | undefined;
+                playbackRate?: number | undefined;
+                cacheTTS?: boolean | undefined;
+            } | undefined;
+        } | undefined;
+    } | undefined;
+    rateLimits?: {
+        tts?: {
+            ipMax?: number | undefined;
+            ipWindowInMinutes?: number | undefined;
+            userMax?: number | undefined;
+            userWindowInMinutes?: number | undefined;
+        } | undefined;
+        stt?: {
+            ipMax?: number | undefined;
+            ipWindowInMinutes?: number | undefined;
+            userMax?: number | undefined;
+            userWindowInMinutes?: number | undefined;
+        } | undefined;
+        fileUploads?: {
+            ipMax?: number | undefined;
+            ipWindowInMinutes?: number | undefined;
+            userMax?: number | undefined;
+            userWindowInMinutes?: number | undefined;
+        } | undefined;
+        conversationsImport?: {
+            ipMax?: number | undefined;
+            ipWindowInMinutes?: number | undefined;
+            userMax?: number | undefined;
+            userWindowInMinutes?: number | undefined;
+        } | undefined;
+    } | undefined;
     fileConfig?: {
         text?: {
             supportedMimeTypes?: any[] | undefined;
@@ -6589,6 +6631,7 @@ export declare const configSchema: z.ZodObject<{
                 model?: string | null | undefined;
                 spec?: string | null | undefined;
                 instructions?: string | undefined;
+                artifacts?: string | undefined;
                 fileTokenLimit?: number | undefined;
                 modelLabel?: string | null | undefined;
                 userLabel?: string | undefined;
@@ -6608,7 +6651,6 @@ export declare const configSchema: z.ZodObject<{
                 thinking?: boolean | undefined;
                 thinkingBudget?: number | undefined;
                 stream?: boolean | undefined;
-                artifacts?: string | undefined;
                 context?: string | null | undefined;
                 examples?: {
                     input: {
@@ -6885,175 +6927,6 @@ export declare const configSchema: z.ZodObject<{
             description: string;
         }> | undefined;
     }> | undefined;
-    interface?: {
-        webSearch?: boolean | undefined;
-        mcpServers?: {
-            placeholder?: string | undefined;
-        } | undefined;
-        privacyPolicy?: {
-            externalUrl?: string | undefined;
-            openNewTab?: boolean | undefined;
-        } | undefined;
-        termsOfService?: {
-            externalUrl?: string | undefined;
-            openNewTab?: boolean | undefined;
-            modalAcceptance?: boolean | undefined;
-            modalTitle?: string | undefined;
-            modalContent?: string | string[] | undefined;
-        } | undefined;
-        customWelcome?: string | undefined;
-        endpointsMenu?: boolean | undefined;
-        modelSelect?: boolean | undefined;
-        parameters?: boolean | undefined;
-        sidePanel?: boolean | undefined;
-        multiConvo?: boolean | undefined;
-        bookmarks?: boolean | undefined;
-        memories?: boolean | undefined;
-        presets?: boolean | undefined;
-        prompts?: boolean | undefined;
-        agents?: boolean | undefined;
-        temporaryChat?: boolean | undefined;
-        temporaryChatRetention?: number | undefined;
-        runCode?: boolean | undefined;
-        peoplePicker?: {
-            users?: boolean | undefined;
-            groups?: boolean | undefined;
-            roles?: boolean | undefined;
-        } | undefined;
-        marketplace?: {
-            use?: boolean | undefined;
-        } | undefined;
-        fileSearch?: boolean | undefined;
-        fileCitations?: boolean | undefined;
-    } | undefined;
-    turnstile?: {
-        siteKey: string;
-        options?: {
-            language?: string | undefined;
-            size?: "normal" | "compact" | "flexible" | "invisible" | undefined;
-        } | undefined;
-    } | undefined;
-    fileStrategy?: FileSources | undefined;
-    fileStrategies?: {
-        default?: FileSources | undefined;
-        avatar?: FileSources | undefined;
-        image?: FileSources | undefined;
-        document?: FileSources | undefined;
-    } | undefined;
-    actions?: {
-        allowedDomains?: string[] | undefined;
-    } | undefined;
-    registration?: {
-        allowedDomains?: string[] | undefined;
-        socialLogins?: string[] | undefined;
-    } | undefined;
-    balance?: {
-        enabled?: boolean | undefined;
-        startBalance?: number | undefined;
-        autoRefillEnabled?: boolean | undefined;
-        refillIntervalValue?: number | undefined;
-        refillIntervalUnit?: "seconds" | "minutes" | "hours" | "days" | "weeks" | "months" | undefined;
-        refillAmount?: number | undefined;
-    } | undefined;
-    transactions?: {
-        enabled?: boolean | undefined;
-    } | undefined;
-    speech?: {
-        tts?: {
-            openai?: {
-                model: string;
-                apiKey: string;
-                voices: string[];
-                url?: string | undefined;
-            } | undefined;
-            azureOpenAI?: {
-                model: string;
-                apiKey: string;
-                voices: string[];
-                instanceName: string;
-                deploymentName: string;
-                apiVersion: string;
-            } | undefined;
-            elevenlabs?: {
-                model: string;
-                apiKey: string;
-                voices: string[];
-                url?: string | undefined;
-                websocketUrl?: string | undefined;
-                voice_settings?: {
-                    similarity_boost?: number | undefined;
-                    stability?: number | undefined;
-                    style?: number | undefined;
-                    use_speaker_boost?: boolean | undefined;
-                } | undefined;
-                pronunciation_dictionary_locators?: string[] | undefined;
-            } | undefined;
-            localai?: {
-                url: string;
-                voices: string[];
-                backend: string;
-                apiKey?: string | undefined;
-            } | undefined;
-        } | undefined;
-        stt?: {
-            openai?: {
-                model: string;
-                apiKey: string;
-                url?: string | undefined;
-            } | undefined;
-            azureOpenAI?: {
-                apiKey: string;
-                instanceName: string;
-                deploymentName: string;
-                apiVersion: string;
-            } | undefined;
-        } | undefined;
-        speechTab?: {
-            conversationMode?: boolean | undefined;
-            advancedMode?: boolean | undefined;
-            speechToText?: boolean | {
-                engineSTT?: string | undefined;
-                languageSTT?: string | undefined;
-                autoTranscribeAudio?: boolean | undefined;
-                decibelValue?: number | undefined;
-                autoSendText?: number | undefined;
-            } | undefined;
-            textToSpeech?: boolean | {
-                engineTTS?: string | undefined;
-                voice?: string | undefined;
-                languageTTS?: string | undefined;
-                automaticPlayback?: boolean | undefined;
-                playbackRate?: number | undefined;
-                cacheTTS?: boolean | undefined;
-            } | undefined;
-        } | undefined;
-    } | undefined;
-    rateLimits?: {
-        tts?: {
-            ipMax?: number | undefined;
-            ipWindowInMinutes?: number | undefined;
-            userMax?: number | undefined;
-            userWindowInMinutes?: number | undefined;
-        } | undefined;
-        stt?: {
-            ipMax?: number | undefined;
-            ipWindowInMinutes?: number | undefined;
-            userMax?: number | undefined;
-            userWindowInMinutes?: number | undefined;
-        } | undefined;
-        fileUploads?: {
-            ipMax?: number | undefined;
-            ipWindowInMinutes?: number | undefined;
-            userMax?: number | undefined;
-            userWindowInMinutes?: number | undefined;
-        } | undefined;
-        conversationsImport?: {
-            ipMax?: number | undefined;
-            ipWindowInMinutes?: number | undefined;
-            userMax?: number | undefined;
-            userWindowInMinutes?: number | undefined;
-        } | undefined;
-    } | undefined;
     endpoints?: {
         azureOpenAI?: ({
             groups: ({
@@ -7261,6 +7134,181 @@ export declare const configSchema: z.ZodObject<{
             titlePromptTemplate?: string | undefined;
         } | undefined;
     } | undefined;
+    interface?: {
+        webSearch?: boolean | undefined;
+        mcpServers?: {
+            placeholder?: string | undefined;
+        } | undefined;
+        privacyPolicy?: {
+            externalUrl?: string | undefined;
+            openNewTab?: boolean | undefined;
+        } | undefined;
+        termsOfService?: {
+            externalUrl?: string | undefined;
+            openNewTab?: boolean | undefined;
+            modalAcceptance?: boolean | undefined;
+            modalTitle?: string | undefined;
+            modalContent?: string | string[] | undefined;
+        } | undefined;
+        customWelcome?: string | undefined;
+        endpointsMenu?: boolean | undefined;
+        modelSelect?: boolean | undefined;
+        parameters?: boolean | undefined;
+        sidePanel?: boolean | undefined;
+        multiConvo?: boolean | undefined;
+        bookmarks?: boolean | undefined;
+        memories?: boolean | undefined;
+        presets?: boolean | undefined;
+        prompts?: boolean | undefined;
+        agents?: boolean | undefined;
+        temporaryChat?: boolean | undefined;
+        temporaryChatRetention?: number | undefined;
+        runCode?: boolean | undefined;
+        peoplePicker?: {
+            users?: boolean | undefined;
+            groups?: boolean | undefined;
+            roles?: boolean | undefined;
+        } | undefined;
+        marketplace?: {
+            use?: boolean | undefined;
+        } | undefined;
+        fileSearch?: boolean | undefined;
+        fileCitations?: boolean | undefined;
+        liveChat?: boolean | undefined;
+        liveAnalysis?: boolean | undefined;
+        artifacts?: boolean | undefined;
+        endpoints?: boolean | undefined;
+        attachments?: boolean | undefined;
+        sgsst?: boolean | undefined;
+    } | undefined;
+    turnstile?: {
+        siteKey: string;
+        options?: {
+            language?: string | undefined;
+            size?: "normal" | "compact" | "flexible" | "invisible" | undefined;
+        } | undefined;
+    } | undefined;
+    fileStrategy?: FileSources | undefined;
+    fileStrategies?: {
+        default?: FileSources | undefined;
+        avatar?: FileSources | undefined;
+        image?: FileSources | undefined;
+        document?: FileSources | undefined;
+    } | undefined;
+    actions?: {
+        allowedDomains?: string[] | undefined;
+    } | undefined;
+    registration?: {
+        allowedDomains?: string[] | undefined;
+        socialLogins?: string[] | undefined;
+    } | undefined;
+    balance?: {
+        enabled?: boolean | undefined;
+        startBalance?: number | undefined;
+        autoRefillEnabled?: boolean | undefined;
+        refillIntervalValue?: number | undefined;
+        refillIntervalUnit?: "seconds" | "minutes" | "hours" | "days" | "weeks" | "months" | undefined;
+        refillAmount?: number | undefined;
+    } | undefined;
+    transactions?: {
+        enabled?: boolean | undefined;
+    } | undefined;
+    speech?: {
+        tts?: {
+            openai?: {
+                model: string;
+                apiKey: string;
+                voices: string[];
+                url?: string | undefined;
+            } | undefined;
+            azureOpenAI?: {
+                model: string;
+                apiKey: string;
+                voices: string[];
+                instanceName: string;
+                deploymentName: string;
+                apiVersion: string;
+            } | undefined;
+            elevenlabs?: {
+                model: string;
+                apiKey: string;
+                voices: string[];
+                url?: string | undefined;
+                websocketUrl?: string | undefined;
+                voice_settings?: {
+                    similarity_boost?: number | undefined;
+                    stability?: number | undefined;
+                    style?: number | undefined;
+                    use_speaker_boost?: boolean | undefined;
+                } | undefined;
+                pronunciation_dictionary_locators?: string[] | undefined;
+            } | undefined;
+            localai?: {
+                url: string;
+                voices: string[];
+                backend: string;
+                apiKey?: string | undefined;
+            } | undefined;
+        } | undefined;
+        stt?: {
+            openai?: {
+                model: string;
+                apiKey: string;
+                url?: string | undefined;
+            } | undefined;
+            azureOpenAI?: {
+                apiKey: string;
+                instanceName: string;
+                deploymentName: string;
+                apiVersion: string;
+            } | undefined;
+        } | undefined;
+        speechTab?: {
+            conversationMode?: boolean | undefined;
+            advancedMode?: boolean | undefined;
+            speechToText?: boolean | {
+                engineSTT?: string | undefined;
+                languageSTT?: string | undefined;
+                autoTranscribeAudio?: boolean | undefined;
+                decibelValue?: number | undefined;
+                autoSendText?: number | undefined;
+            } | undefined;
+            textToSpeech?: boolean | {
+                engineTTS?: string | undefined;
+                voice?: string | undefined;
+                languageTTS?: string | undefined;
+                automaticPlayback?: boolean | undefined;
+                playbackRate?: number | undefined;
+                cacheTTS?: boolean | undefined;
+            } | undefined;
+        } | undefined;
+    } | undefined;
+    rateLimits?: {
+        tts?: {
+            ipMax?: number | undefined;
+            ipWindowInMinutes?: number | undefined;
+            userMax?: number | undefined;
+            userWindowInMinutes?: number | undefined;
+        } | undefined;
+        stt?: {
+            ipMax?: number | undefined;
+            ipWindowInMinutes?: number | undefined;
+            userMax?: number | undefined;
+            userWindowInMinutes?: number | undefined;
+        } | undefined;
+        fileUploads?: {
+            ipMax?: number | undefined;
+            ipWindowInMinutes?: number | undefined;
+            userMax?: number | undefined;
+            userWindowInMinutes?: number | undefined;
+        } | undefined;
+        conversationsImport?: {
+            ipMax?: number | undefined;
+            ipWindowInMinutes?: number | undefined;
+            userMax?: number | undefined;
+            userWindowInMinutes?: number | undefined;
+        } | undefined;
+    } | undefined;
     fileConfig?: {
         text?: {
             supportedMimeTypes?: any[] | undefined;
@@ -7323,6 +7371,7 @@ export declare const configSchema: z.ZodObject<{
                 model?: string | null | undefined;
                 spec?: string | null | undefined;
                 instructions?: string | undefined;
+                artifacts?: string | undefined;
                 fileTokenLimit?: string | number | undefined;
                 modelLabel?: string | null | undefined;
                 userLabel?: string | undefined;
@@ -7342,7 +7391,6 @@ export declare const configSchema: z.ZodObject<{
                 thinking?: boolean | undefined;
                 thinkingBudget?: string | number | undefined;
                 stream?: boolean | undefined;
-                artifacts?: string | undefined;
                 context?: string | null | undefined;
                 examples?: {
                     input: {
@@ -8299,6 +8347,12 @@ export declare const getConfigDefaults: () => ExtractDefaults<{
         }>>;
         fileSearch: z.ZodOptional<z.ZodBoolean>;
         fileCitations: z.ZodOptional<z.ZodBoolean>;
+        liveChat: z.ZodOptional<z.ZodBoolean>;
+        liveAnalysis: z.ZodOptional<z.ZodBoolean>;
+        artifacts: z.ZodOptional<z.ZodBoolean>;
+        endpoints: z.ZodOptional<z.ZodBoolean>;
+        attachments: z.ZodOptional<z.ZodBoolean>;
+        sgsst: z.ZodOptional<z.ZodBoolean>;
     }, "strip", z.ZodTypeAny, {
         webSearch?: boolean | undefined;
         mcpServers?: {
@@ -8339,6 +8393,12 @@ export declare const getConfigDefaults: () => ExtractDefaults<{
         } | undefined;
         fileSearch?: boolean | undefined;
         fileCitations?: boolean | undefined;
+        liveChat?: boolean | undefined;
+        liveAnalysis?: boolean | undefined;
+        artifacts?: boolean | undefined;
+        endpoints?: boolean | undefined;
+        attachments?: boolean | undefined;
+        sgsst?: boolean | undefined;
     }, {
         webSearch?: boolean | undefined;
         mcpServers?: {
@@ -8379,6 +8439,12 @@ export declare const getConfigDefaults: () => ExtractDefaults<{
         } | undefined;
         fileSearch?: boolean | undefined;
         fileCitations?: boolean | undefined;
+        liveChat?: boolean | undefined;
+        liveAnalysis?: boolean | undefined;
+        artifacts?: boolean | undefined;
+        endpoints?: boolean | undefined;
+        attachments?: boolean | undefined;
+        sgsst?: boolean | undefined;
     }>>;
     turnstile: z.ZodOptional<z.ZodObject<{
         siteKey: z.ZodString;
@@ -9223,6 +9289,7 @@ export declare const getConfigDefaults: () => ExtractDefaults<{
                 model: z.ZodOptional<z.ZodNullable<z.ZodString>>;
                 spec: z.ZodOptional<z.ZodNullable<z.ZodString>>;
                 instructions: z.ZodOptional<z.ZodString>;
+                artifacts: z.ZodOptional<z.ZodString>;
                 fileTokenLimit: z.ZodOptional<z.ZodEffects<z.ZodUnion<[z.ZodNumber, z.ZodString]>, number | undefined, string | number>>;
                 modelLabel: z.ZodOptional<z.ZodNullable<z.ZodString>>;
                 userLabel: z.ZodOptional<z.ZodString>;
@@ -9242,7 +9309,6 @@ export declare const getConfigDefaults: () => ExtractDefaults<{
                 thinking: z.ZodOptional<z.ZodBoolean>;
                 thinkingBudget: z.ZodOptional<z.ZodEffects<z.ZodUnion<[z.ZodNumber, z.ZodString]>, number | undefined, string | number>>;
                 stream: z.ZodOptional<z.ZodBoolean>;
-                artifacts: z.ZodOptional<z.ZodString>;
                 context: z.ZodOptional<z.ZodNullable<z.ZodString>>;
                 examples: z.ZodOptional<z.ZodArray<z.ZodObject<{
                     input: z.ZodObject<{
@@ -9395,6 +9461,7 @@ export declare const getConfigDefaults: () => ExtractDefaults<{
                 model?: string | null | undefined;
                 spec?: string | null | undefined;
                 instructions?: string | undefined;
+                artifacts?: string | undefined;
                 fileTokenLimit?: number | undefined;
                 modelLabel?: string | null | undefined;
                 userLabel?: string | undefined;
@@ -9414,7 +9481,6 @@ export declare const getConfigDefaults: () => ExtractDefaults<{
                 thinking?: boolean | undefined;
                 thinkingBudget?: number | undefined;
                 stream?: boolean | undefined;
-                artifacts?: string | undefined;
                 context?: string | null | undefined;
                 examples?: {
                     input: {
@@ -9507,6 +9573,7 @@ export declare const getConfigDefaults: () => ExtractDefaults<{
                 model?: string | null | undefined;
                 spec?: string | null | undefined;
                 instructions?: string | undefined;
+                artifacts?: string | undefined;
                 fileTokenLimit?: string | number | undefined;
                 modelLabel?: string | null | undefined;
                 userLabel?: string | undefined;
@@ -9526,7 +9593,6 @@ export declare const getConfigDefaults: () => ExtractDefaults<{
                 thinking?: boolean | undefined;
                 thinkingBudget?: string | number | undefined;
                 stream?: boolean | undefined;
-                artifacts?: string | undefined;
                 context?: string | null | undefined;
                 examples?: {
                     input: {
@@ -9635,6 +9701,7 @@ export declare const getConfigDefaults: () => ExtractDefaults<{
                 model?: string | null | undefined;
                 spec?: string | null | undefined;
                 instructions?: string | undefined;
+                artifacts?: string | undefined;
                 fileTokenLimit?: number | undefined;
                 modelLabel?: string | null | undefined;
                 userLabel?: string | undefined;
@@ -9654,7 +9721,6 @@ export declare const getConfigDefaults: () => ExtractDefaults<{
                 thinking?: boolean | undefined;
                 thinkingBudget?: number | undefined;
                 stream?: boolean | undefined;
-                artifacts?: string | undefined;
                 context?: string | null | undefined;
                 examples?: {
                     input: {
@@ -9763,6 +9829,7 @@ export declare const getConfigDefaults: () => ExtractDefaults<{
                 model?: string | null | undefined;
                 spec?: string | null | undefined;
                 instructions?: string | undefined;
+                artifacts?: string | undefined;
                 fileTokenLimit?: string | number | undefined;
                 modelLabel?: string | null | undefined;
                 userLabel?: string | undefined;
@@ -9782,7 +9849,6 @@ export declare const getConfigDefaults: () => ExtractDefaults<{
                 thinking?: boolean | undefined;
                 thinkingBudget?: string | number | undefined;
                 stream?: boolean | undefined;
-                artifacts?: string | undefined;
                 context?: string | null | undefined;
                 examples?: {
                     input: {
@@ -9896,6 +9962,7 @@ export declare const getConfigDefaults: () => ExtractDefaults<{
                 model?: string | null | undefined;
                 spec?: string | null | undefined;
                 instructions?: string | undefined;
+                artifacts?: string | undefined;
                 fileTokenLimit?: number | undefined;
                 modelLabel?: string | null | undefined;
                 userLabel?: string | undefined;
@@ -9915,7 +9982,6 @@ export declare const getConfigDefaults: () => ExtractDefaults<{
                 thinking?: boolean | undefined;
                 thinkingBudget?: number | undefined;
                 stream?: boolean | undefined;
-                artifacts?: string | undefined;
                 context?: string | null | undefined;
                 examples?: {
                     input: {
@@ -10027,6 +10093,7 @@ export declare const getConfigDefaults: () => ExtractDefaults<{
                 model?: string | null | undefined;
                 spec?: string | null | undefined;
                 instructions?: string | undefined;
+                artifacts?: string | undefined;
                 fileTokenLimit?: string | number | undefined;
                 modelLabel?: string | null | undefined;
                 userLabel?: string | undefined;
@@ -10046,7 +10113,6 @@ export declare const getConfigDefaults: () => ExtractDefaults<{
                 thinking?: boolean | undefined;
                 thinkingBudget?: string | number | undefined;
                 stream?: boolean | undefined;
-                artifacts?: string | undefined;
                 context?: string | null | undefined;
                 examples?: {
                     input: {

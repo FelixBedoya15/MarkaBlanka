@@ -91,6 +91,12 @@ export interface IRole extends Document {
         [PermissionTypes.ATTACHMENTS]?: {
             [Permissions.USE]?: boolean;
         };
+        [PermissionTypes.PARAMETERS]?: {
+            [Permissions.USE]?: boolean;
+        };
+        [PermissionTypes.SGSST]?: {
+            [Permissions.USE]?: boolean;
+        };
     };
 }
 export type RolePermissions = IRole['permissions'];

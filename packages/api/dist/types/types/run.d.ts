@@ -6,6 +6,7 @@ export type RunLLMConfig = {
     streaming: boolean;
     streamUsage: boolean;
     usage?: boolean;
+    disableStreaming?: boolean;
     configuration?: OpenAIConfiguration;
 } & AgentModelParameters & ClientOptions;
 //# sourceMappingURL=run.d.ts.map
