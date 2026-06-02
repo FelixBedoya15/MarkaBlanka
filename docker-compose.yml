@@ -2,7 +2,7 @@
 # Refer to `docker-compose.override.yaml.example’ for some sample configurations.
 
 services:
-  somossst-api:
+  api:
     env_file:
       - .env
     container_name: somossst-api
