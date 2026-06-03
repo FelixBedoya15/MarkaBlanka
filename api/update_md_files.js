@@ -30,7 +30,7 @@ const AGENT_RENAME_MAP = {
   'Redactor de Blog': 'Estratega de Contenidos Corporativos'
 };
 
-const agentsDir = path.join(__dirname, '../Agentes/Agentes Wappy');
+const agentsDir = path.join(__dirname, '../Agentes/Agentes SomosSST');
 const files = fs.readdirSync(agentsDir).filter(f => f.endsWith('.md'));
 
 for (const file of files) {

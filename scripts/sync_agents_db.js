@@ -41,7 +41,7 @@ async function sync() {
   await mongoose.connect(mongoUri);
   console.log('Connected successfully!');
 
-  const agentsDir = path.resolve(__dirname, '../Agentes/Agentes Wappy');
+  const agentsDir = path.resolve(__dirname, '../Agentes/Agentes SomosSST');
   if (!fs.existsSync(agentsDir)) {
     console.error(`Directory not found: ${agentsDir}`);
     process.exit(1);
